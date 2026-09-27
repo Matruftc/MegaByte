@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GenZ Prep Master · High-Yield Tech & Behavioral Interview Hub</title>
+  <meta name="description" content="GenZ Prep: 200 high-frequency interview questions (50 Coding, 50 Technical Interview, 50 Behavioral with STAR, 50 Programming) with 90%+ real-world occurrence, runnable code, interactive quiz, 3D flashcards, and AI interview coach.">
+  <meta name="author" content="MegaByte · Matru & Bisal">
+  <meta name="theme-color" content="#0a0f1f">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <div class="aura" aria-hidden="true"></div>
+  <div class="grid-bg" aria-hidden="true"></div>
+  <div class="vignette" aria-hidden="true"></div>
+
+  <div class="ide">
+    <!-- Activity bar -->
+    <aside class="activity" id="activity">
+      <a class="act-logo" href="#/home" title="GenZ Prep by MegaByte">⚡</a>
+      <nav class="act-nav" aria-label="Main">
+        <a href="#/home" data-route="home" title="Home">🏠</a>
+        <a href="#/topics" data-route="topics" title="4 High-Yield Tracks (200 Qs)">📚</a>
+        <a href="#/coding" data-route="coding" title="50 Coding Questions">💻</a>
+        <a href="#/interview" data-route="interview" title="50 Tech Interview Questions">🎯</a>
+        <a href="#/behavioural" data-route="behavioural" title="50 Behavioral Questions (STAR)">🤝</a>
+        <a href="#/programming" data-route="programming" title="50 Programming & Output Questions">⚡</a>
+        <a href="#/playground" data-route="playground" title="Playground">▶️</a>
+        <a href="#/arena" data-route="arena" title="Predict Output">🔮</a>
+        <a href="#/quiz" data-route="quiz" title="JUnit 5 Quiz">🧪</a>
+        <a href="#/flashcards" data-route="flashcards" title="Flashcards">🃏</a>
+        <a href="#/search" data-route="search" title="Search">🔎</a>
+        <a href="#/progress" data-route="progress" title="Progress & Badges">🏅</a>
+        <a href="#/dropbox" data-route="dropbox" title="Question Dropbox">📥</a>
+        <a href="#/data" data-route="data" title="Database Clusters">🗄️</a>
+        <a href="#/about" data-route="about" title="About MegaByte">👥</a>
+      </nav>
+      <div class="act-bottom">
+        <button class="act-btn" id="themeBtn" title="Toggle Theme" aria-label="Toggle theme">◐</button>
+      </div>
+    </aside>
+
+    <div class="workbench">
+      <!-- Titlebar -->
+      <header class="titlebar">
+        <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <a class="brand" href="#/home">
+          <span>⚡</span>
+          <span class="brand-text">GenZ<b>Prep</b></span>
+          <span class="brand-tag">90% High-Yield</span>
+        </a>
+        <div class="crumbs" id="crumbs"></div>
+        <a class="cmdk" id="cmdkBtn" href="#/search" title="Open question search">
+          <span>⌕</span>
+          <span>Search 200 questions…</span>
+          <kbd>⌘K</kbd>
+        </a>
+        <a class="xp-pill" id="xpPill" href="#/progress" title="Your XP & Level"></a>
+        <div class="soothe-group">
+          <button class="soothe-btn" id="ambienceBtn" title="Switch Soothing Background Atmosphere (Midnight, Zen, Cosmos)">
+            <span id="ambienceIcon">🌌</span>
+            <span id="ambienceName">Midnight</span>
+          </button>
+          <button class="soothe-btn" id="sootheAudioBtn" title="Toggle Soothing Ambient Focus Sound">
+            <span id="audioIcon">🎧</span>
+            <span id="audioLabel">Focus Sound</span>
+          </button>
+        </div>
+        <a class="back-home" href="../index.html" title="Back to MegaByte landing page"><span aria-hidden="true">←</span> MegaByte Home</a>
+      </header>
+
+      <!-- Main content view -->
+      <main id="app" tabindex="-1"></main>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <div class="footer-main">
+          <div class="footer-brand">
+            <a class="footer-logo" href="#/home" aria-label="GenZ Prep Master home"><span>⚡</span> GenZ <b>Prep Master</b></a>
+            <p>Get interview-ready with 200 focused questions across four tracks.</p>
+            <span class="footer-built">Built by <b>MegaByte</b></span>
+          </div>
+          <nav class="footer-links" aria-label="Explore GenZ Prep">
+            <span class="footer-label">Explore</span>
+            <a href="#/topics">All 4 tracks</a>
+            <a href="#/playground">Java playground</a>
+            <a href="#/about">About MegaByte</a>
+          </nav>
+          <div class="footer-shortcuts">
+            <span class="footer-label">Quick keys</span>
+            <span><kbd>⌘K</kbd> Search questions</span>
+            <span><kbd>C</kbd> Ask SIA</span>
+            <span><kbd>Space</kbd> Flip a flashcard</span>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span>© 2026 MegaByte · Founded by <b>Matru</b> “Mega” &amp; <b>Bisal</b> “Byte”</span>
+          <a href="../index.html">Back to MegaByte</a>
+        </div>
+      </footer>
+
+      <!-- Statusbar -->
+      <div class="statusbar" role="status">
+        <span class="st-item">git: main</span>
+        <span class="st-item"><i class="st-dot"></i> OpenJDK 21.0.3 (HotSpot 64-Bit VM)</span>
+        <span class="st-item" id="stKnown"></span>
+        <span class="st-item" id="stStreak"></span>
+        <span class="spacer"></span>
+        <span class="st-item" id="stAmbience">🌌 Midnight Aurora</span>
+        <span class="st-item">4 Tracks · 200 Questions</span>
+        <span class="st-item">UTF-8</span>
+        <span class="st-item">⚡ GenZ Prep</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Opening Curtain Boot Screen -->
+  <div class="curtain closed" id="boot" aria-hidden="true">
+    <div class="panel left"></div>
+    <div class="panel right"></div>
+    <div class="curtain-center">
+      <div class="curtain-logo">⚡</div>
+      <div class="curtain-label">GenZ Prep</div>
+      <div class="curtain-sub" id="bootLog">Loading 200 High-Yield Interview Questions (50 per track)...</div>
+    </div>
+  </div>
+
+  <div id="toasts" aria-live="polite"></div>
+
+  <!-- Scripts -->
+  <script src="./data.js"></script>
+  <script src="./app.js"></script>
+  <script src="./chat.js"></script>
+</body>
+</html>

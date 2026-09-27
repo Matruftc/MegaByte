@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#081419">
+  <meta name="description" content="Learn practical ETL and ELT pipeline design, data quality, orchestration, and modern data engineering with MegaByte Academy.">
+  <title>ETL/ELT Academy · MegaByte</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#overview" aria-label="ETL/ELT Academy home"><span class="brand-mark">⇄</span><span><b>Data</b> Academy<small>by MegaByte</small></span></a>
+      <div class="side-label">LEARN</div>
+      <nav class="side-nav" aria-label="Academy sections">
+        <button class="nav-item active" data-view="overview"><span>⌂</span>Overview</button>
+        <button class="nav-item" data-view="curriculum"><span>▤</span>Curriculum <em>15</em></button>
+        <button class="nav-item" data-view="pipeline"><span>⤳</span>Pipeline Lab</button>
+        <button class="nav-item" data-view="quality"><span>✓</span>Quality Lab</button>
+        <button class="nav-item" data-view="quiz"><span>✳</span>Knowledge Check</button>
+        <button class="nav-item" data-view="progress"><span>◷</span>My Progress</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="side-progress"><div class="progress-line"><span id="sideProgress"></span></div><div><b id="sideProgressText">0 of 15 complete</b><small>Your learning path</small></div></div>
+        <a class="back-link" href="../index.html"><span>←</span> MegaByte Home</a>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <button class="mobile-menu" id="menuBtn" aria-label="Toggle menu">☰</button>
+        <div class="breadcrumbs"><span>Academy</span><span>/</span><b id="crumb">Overview</b></div>
+        <div class="top-actions"><span class="live-badge"><i></i> Learning path</span><button class="theme-btn" id="themeBtn" aria-label="Toggle theme">◐</button></div>
+      </header>
+      <div id="view" class="view" tabindex="-1"></div>
+      <footer class="footer"><span>© 2026 MegaByte · ETL/ELT Academy</span><span>Build pipelines you can trust.</span></footer>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="./data.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>

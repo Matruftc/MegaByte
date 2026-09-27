@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="600" viewBox="0 0 960 600" fill="none">
+  <defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#071A2A"/><stop offset="1" stop-color="#102D3E"/></linearGradient><linearGradient id="line" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#38BDF8"/><stop offset="1" stop-color="#34D399"/></linearGradient></defs>
+  <rect width="960" height="600" rx="28" fill="url(#bg)"/><circle cx="800" cy="105" r="190" fill="#38BDF8" opacity=".08"/>
+  <text x="56" y="72" fill="#7DD3FC" font-family="Arial,sans-serif" font-size="18" font-weight="700" letter-spacing="2">MEGABYTE · DATA ENGINEERING</text>
+  <text x="56" y="145" fill="#F8FAFC" font-family="Arial,sans-serif" font-size="48" font-weight="750">ETL / ELT Academy</text>
+  <text x="58" y="184" fill="#AFC2D2" font-family="Arial,sans-serif" font-size="20">Learn how data moves, transforms and powers decisions.</text>
+  <rect x="56" y="224" width="848" height="292" rx="20" fill="#0B1927" stroke="#244254"/>
+  <text x="88" y="267" fill="#71879A" font-family="monospace" font-size="14">DATA PIPELINE · OVERVIEW</text>
+  <g font-family="Arial,sans-serif" text-anchor="middle">
+    <rect x="94" y="314" width="176" height="116" rx="16" fill="#112638" stroke="#1F718D"/><text x="182" y="360" fill="#7DD3FC" font-size="31">▤</text><text x="182" y="397" fill="#E5F4FC" font-size="17" font-weight="700">Sources</text>
+    <rect x="392" y="314" width="176" height="116" rx="16" fill="#112638" stroke="#18846F"/><text x="480" y="360" fill="#6EE7B7" font-size="31">⚙</text><text x="480" y="397" fill="#E5F4FC" font-size="17" font-weight="700">Transform</text>
+    <rect x="690" y="314" width="176" height="116" rx="16" fill="#112638" stroke="#987328"/><text x="778" y="360" fill="#FCD34D" font-size="31">▦</text><text x="778" y="397" fill="#E5F4FC" font-size="17" font-weight="700">Warehouse</text>
+  </g>
+  <path d="M278 372h99m0 0-12-10m12 10-12 10M576 372h99m0 0-12-10m12 10-12 10" stroke="url(#line)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="94" y="456" width="772" height="36" rx="10" fill="#102334"/><circle cx="116" cy="474" r="5" fill="#34D399"/><text x="132" y="479" fill="#AFC2D2" font-family="monospace" font-size="13">15 MODULES  ·  INTERACTIVE PIPELINE AND DATA QUALITY LABS</text>
+</svg>

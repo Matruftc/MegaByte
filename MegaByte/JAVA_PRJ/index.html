@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Java Academy · Learn Java by running it</title>
+  <meta name="description" content="Interactive Java learning hub by MegaByte: 45+ explained concepts with runnable code, Java playground, predict-the-output challenges, JUnit 5 quiz mode, 3D flashcards, XP, badges, and Duke AI tutor.">
+  <meta name="author" content="MegaByte · Matru & Bisal">
+  <meta name="theme-color" content="#0a0f1f">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>☕</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <div class="aura" aria-hidden="true"></div>
+  <div class="grid-bg" aria-hidden="true"></div>
+
+  <div class="ide">
+    <!-- Activity bar -->
+    <aside class="activity" id="activity">
+      <a class="act-logo" href="#/home" title="Java Academy by MegaByte">☕</a>
+      <nav class="act-nav" aria-label="Main">
+        <a href="#/home" data-route="home" title="Home">🏠</a>
+        <a href="#/topics" data-route="topics" title="18 Modules">📚</a>
+        <a href="#/playground" data-route="playground" title="Playground">▶️</a>
+        <a href="#/arena" data-route="arena" title="Predict Output">🔮</a>
+        <a href="#/quiz" data-route="quiz" title="JUnit 5 Quiz">⚡</a>
+        <a href="#/flashcards" data-route="flashcards" title="Flashcards">🃏</a>
+        <a href="#/search" data-route="search" title="Search">🔎</a>
+        <a href="#/progress" data-route="progress" title="Progress & Badges">🏅</a>
+        <a href="#/dropbox" data-route="dropbox" title="Question Dropbox">📥</a>
+        <a href="#/data" data-route="data" title="Database Clusters">🗄️</a>
+        <a href="#/about" data-route="about" title="About MegaByte">👥</a>
+      </nav>
+      <div class="act-bottom">
+        <button class="act-btn" id="themeBtn" title="Toggle Theme" aria-label="Toggle theme">◐</button>
+      </div>
+    </aside>
+
+    <div class="workbench">
+      <!-- Titlebar -->
+      <header class="titlebar">
+        <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <a class="brand" href="#/home">
+          <span>☕</span>
+          <span class="brand-text">Java<b>Academy</b></span>
+        </a>
+        <div class="crumbs" id="crumbs"></div>
+        <a class="cmdk" href="#/search" title="Open Instant Search">
+          <span>⌕</span>
+          <span>Instant Search</span>
+        </a>
+        <a class="xp-pill" id="xpPill" href="#/progress" title="Your XP & Level"></a>
+        <a class="back-home" href="../index.html" title="Back to MegaByte landing page">MegaByte →</a>
+      </header>
+
+      <!-- Main content view -->
+      <main id="app" tabindex="-1"></main>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <span>© 2026 <b>MegaByte</b> · Java Academy · Founded by <a href="#/about" class="link">Matru (Mega) &amp; Bisal (Byte)</a> · All rights reserved</span>
+        <span class="muted"><kbd>⌘K</kbd> palette · <kbd>C</kbd> Duke tutor · <kbd>Space</kbd> flip flashcard</span>
+      </footer>
+
+      <!-- Statusbar -->
+      <div class="statusbar" role="status">
+        <span class="st-item">git: main</span>
+        <span class="st-item"><i class="st-dot"></i> OpenJDK 21.0.3 (HotSpot 64-Bit VM)</span>
+        <span class="st-item" id="stKnown"></span>
+        <span class="st-item" id="stStreak"></span>
+        <span class="spacer"></span>
+        <span class="st-item">UTF-8</span>
+        <span class="st-item">LF</span>
+        <span class="st-item">☕ Java 21</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Opening Curtain Boot Screen -->
+  <div class="curtain closed" id="boot" aria-hidden="true">
+    <div class="panel left"></div>
+    <div class="panel right"></div>
+    <div class="curtain-center">
+      <div class="curtain-logo">☕</div>
+      <div class="curtain-label">Java Academy</div>
+      <div class="curtain-sub" id="bootLog">Initializing JVM &amp; Loading Curriculum...</div>
+    </div>
+  </div>
+
+  <div id="toasts" aria-live="polite"></div>
+
+  <!-- Scripts -->
+  <script src="./data.js"></script>
+  <script src="./db.js"></script>
+  <script src="./app.js?v=java-terminal-2"></script>
+  <script src="./chat.js"></script>
+</body>
+</html>

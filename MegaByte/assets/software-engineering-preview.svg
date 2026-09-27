@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="600" viewBox="0 0 960 600" fill="none">
+  <defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#111126"/><stop offset="1" stop-color="#22204A"/></linearGradient><linearGradient id="accent" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#A78BFA"/><stop offset="1" stop-color="#60A5FA"/></linearGradient></defs>
+  <rect width="960" height="600" rx="28" fill="url(#bg)"/><circle cx="808" cy="115" r="190" fill="#A78BFA" opacity=".09"/>
+  <text x="56" y="72" fill="#C4B5FD" font-family="Arial,sans-serif" font-size="18" font-weight="700" letter-spacing="2">MEGABYTE · BUILD WITH CONFIDENCE</text>
+  <text x="56" y="145" fill="#F8FAFC" font-family="Arial,sans-serif" font-size="46" font-weight="750">Software Engineering</text>
+  <text x="58" y="184" fill="#B8B8D0" font-family="Arial,sans-serif" font-size="20">Design, develop, test and ship reliable software.</text>
+  <rect x="56" y="224" width="848" height="292" rx="20" fill="#111322" stroke="#343358"/>
+  <rect x="56" y="224" width="848" height="42" rx="20" fill="#19192E"/><path d="M56 266h848" stroke="#343358"/>
+  <circle cx="80" cy="245" r="5" fill="#FB7185"/><circle cx="98" cy="245" r="5" fill="#FBBF24"/><circle cx="116" cy="245" r="5" fill="#4ADE80"/>
+  <text x="146" y="250" fill="#A5A5C3" font-family="monospace" font-size="13">engineering-workflow.md</text>
+  <g font-family="Arial,sans-serif">
+    <rect x="91" y="296" width="174" height="132" rx="15" fill="#1B1B34" stroke="#51478A"/><text x="178" y="339" text-anchor="middle" fill="#C4B5FD" font-size="28">◇</text><text x="178" y="376" text-anchor="middle" fill="#F0EEFF" font-size="16" font-weight="700">Design</text><text x="178" y="401" text-anchor="middle" fill="#A5A5C3" font-size="12">Plan the solution</text>
+    <rect x="393" y="296" width="174" height="132" rx="15" fill="#1B1B34" stroke="#3D63A0"/><text x="480" y="339" text-anchor="middle" fill="#93C5FD" font-size="28">&lt;/&gt;</text><text x="480" y="376" text-anchor="middle" fill="#F0EEFF" font-size="16" font-weight="700">Develop</text><text x="480" y="401" text-anchor="middle" fill="#A5A5C3" font-size="12">Build in small steps</text>
+    <rect x="695" y="296" width="174" height="132" rx="15" fill="#1B1B34" stroke="#397B67"/><text x="782" y="339" text-anchor="middle" fill="#6EE7B7" font-size="28">✓</text><text x="782" y="376" text-anchor="middle" fill="#F0EEFF" font-size="16" font-weight="700">Test &amp; Ship</text><text x="782" y="401" text-anchor="middle" fill="#A5A5C3" font-size="12">Deliver with confidence</text>
+  </g>
+  <path d="M272 362h105m0 0-12-10m12 10-12 10M574 362h105m0 0-12-10m12 10-12 10" stroke="url(#accent)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="91" y="454" width="778" height="36" rx="10" fill="#1A1A31"/><circle cx="113" cy="472" r="5" fill="#A78BFA"/><text x="129" y="477" fill="#B8B8D0" font-family="monospace" font-size="13">COMING SOON  ·  Practical software engineering foundations</text>
+</svg>

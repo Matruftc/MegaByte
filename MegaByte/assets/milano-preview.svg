@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" font-family="Arial, Helvetica, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0b0f1a"/><stop offset="1" stop-color="#151b2e"/></linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f5d78e"/><stop offset="1" stop-color="#b8892e"/></linearGradient>
+    <linearGradient id="area" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#38bdf8" stop-opacity=".45"/><stop offset="1" stop-color="#38bdf8" stop-opacity="0"/></linearGradient>
+  </defs>
+  <rect width="1600" height="1000" fill="url(#bg)"/>
+  <!-- top bar -->
+  <rect width="1600" height="84" fill="#ffffff" opacity=".04"/>
+  <rect x="40" y="20" width="44" height="44" rx="10" fill="url(#gold)"/><text x="62" y="52" fill="#111" font-size="26" font-weight="700" text-anchor="middle" font-family="Georgia, serif">M</text>
+  <text x="102" y="52" fill="#f3f4f6" font-size="26" font-weight="700">Milano<tspan fill="#f5d78e">Tech</tspan></text>
+  <rect x="1180" y="22" width="190" height="40" rx="20" fill="none" stroke="#38bdf8" stroke-opacity=".6"/><text x="1275" y="48" fill="#e0f2fe" font-size="16" text-anchor="middle">Sync Secure Data</text>
+  <circle cx="1530" cy="42" r="21" fill="#38bdf8"/><text x="1530" y="49" fill="#0b0f1a" font-size="20" font-weight="700" text-anchor="middle">M</text>
+  <!-- KPI cards -->
+  <g font-size="15" fill="#9ca3af">
+    <rect x="40" y="116" width="365" height="140" rx="16" fill="#fff" fill-opacity=".05" stroke="#fff" stroke-opacity=".08"/>
+    <rect x="425" y="116" width="365" height="140" rx="16" fill="#fff" fill-opacity=".05" stroke="#fff" stroke-opacity=".08"/>
+    <rect x="810" y="116" width="365" height="140" rx="16" fill="#fff" fill-opacity=".05" stroke="#fff" stroke-opacity=".08"/>
+    <rect x="1195" y="116" width="365" height="140" rx="16" fill="#fff" fill-opacity=".05" stroke="#fff" stroke-opacity=".08"/>
+    <text x="68" y="154">TOTAL REVENUE</text><text x="453" y="154">TOTAL EXPENSE</text><text x="838" y="154">NET PROFIT</text><text x="1223" y="154">HEADCOUNT</text>
+  </g>
+  <g font-size="38" font-weight="700" fill="#f3f4f6">
+    <text x="68" y="206">$312.4M</text><text x="453" y="206">$198.7M</text><text x="838" y="206">$89.6M</text><text x="1223" y="206">1,540</text>
+  </g>
+  <g font-size="15" font-weight="700"><text x="68" y="236" fill="#10b981">▲ 12.4% YoY</text><text x="453" y="236" fill="#f59e0b">▲ 6.1% YoY</text><text x="838" y="236" fill="#10b981">▲ 18.9% YoY</text><text x="1223" y="236" fill="#10b981">▲ 4.2% YoY</text></g>
+  <!-- line chart -->
+  <rect x="40" y="280" width="980" height="420" rx="18" fill="#fff" fill-opacity=".05" stroke="#fff" stroke-opacity=".08"/>
+  <text x="70" y="322" fill="#f3f4f6" font-size="20" font-weight="700">Revenue vs Expense trend</text>
+  <g stroke="#fff" stroke-opacity=".06"><line x1="80" y1="400" x2="990" y2="400"/><line x1="80" y1="480" x2="990" y2="480"/><line x1="80" y1="560" x2="990" y2="560"/><line x1="80" y1="640" x2="990" y2="640"/></g>
+  <path d="M80 560 L160 530 L240 545 L320 490 L400 500 L480 450 L560 470 L640 420 L720 430 L800 390 L880 400 L990 360 L990 660 L80 660 Z" fill="url(#area)"/>
+  <path d="M80 560 L160 530 L240 545 L320 490 L400 500 L480 450 L560 470 L640 420 L720 430 L800 390 L880 400 L990 360" fill="none" stroke="#38bdf8" stroke-width="4"/>
+  <path d="M80 610 L160 600 L240 595 L320 580 L400 585 L480 560 L560 565 L640 545 L720 550 L800 530 L880 535 L990 515" fill="none" stroke="#f5d78e" stroke-width="4" stroke-dasharray="10 8"/>
+  <!-- doughnut -->
+  <rect x="1040" y="280" width="520" height="420" rx="18" fill="#fff" fill-opacity=".05" stroke="#fff" stroke-opacity=".08"/>
+  <text x="1070" y="322" fill="#f3f4f6" font-size="20" font-weight="700">Expense by department</text>
+  <g fill="none" stroke-width="46" transform="translate(1210 510)">
+    <circle r="120" stroke="#38bdf8" stroke-dasharray="226 528"/>
+    <circle r="120" stroke="#f5d78e" stroke-dasharray="170 584" stroke-dashoffset="-226"/>
+    <circle r="120" stroke="#a78bfa" stroke-dasharray="150 604" stroke-dashoffset="-396"/>
+    <circle r="120" stroke="#10b981" stroke-dasharray="208 546" stroke-dashoffset="-546"/>
+  </g>
+  <g font-size="16" fill="#d1d5db">
+    <rect x="1380" y="420" width="16" height="16" rx="4" fill="#38bdf8"/><text x="1406" y="434">Engineering</text>
+    <rect x="1380" y="460" width="16" height="16" rx="4" fill="#f5d78e"/><text x="1406" y="474">Sales</text>
+    <rect x="1380" y="500" width="16" height="16" rx="4" fill="#a78bfa"/><text x="1406" y="514">Marketing</text>
+    <rect x="1380" y="540" width="16" height="16" rx="4" fill="#10b981"/><text x="1406" y="554">Finance</text>
+  </g>
+  <!-- table -->
+  <rect x="40" y="724" width="1520" height="250" rx="18" fill="#fff" fill-opacity=".05" stroke="#fff" stroke-opacity=".08"/>
+  <g font-size="15" font-weight="700" fill="#9ca3af"><text x="70" y="768">MONTH</text><text x="300" y="768">DEPARTMENT</text><text x="600" y="768">REVENUE</text><text x="880" y="768">EXPENSE</text><text x="1160" y="768">NET PROFIT</text></g>
+  <g stroke="#fff" stroke-opacity=".07"><line x1="70" y1="786" x2="1530" y2="786"/><line x1="70" y1="836" x2="1530" y2="836"/><line x1="70" y1="886" x2="1530" y2="886"/><line x1="70" y1="936" x2="1530" y2="936"/></g>
+  <g font-size="17" fill="#e5e7eb">
+    <text x="70" y="818">12 / 2024</text><text x="300" y="818">Engineering</text><text x="600" y="818">$3,284,120</text><text x="880" y="818">$2,011,540</text><text x="1160" y="818" fill="#10b981">$1,018,064</text>
+    <text x="70" y="868">12 / 2024</text><text x="300" y="868">Sales</text><text x="600" y="868">$2,917,406</text><text x="880" y="868">$1,803,227</text><text x="1160" y="868" fill="#10b981">$891,343</text>
+    <text x="70" y="918">11 / 2024</text><text x="300" y="918">Finance</text><text x="600" y="918">$2,532,156</text><text x="880" y="918">$1,619,034</text><text x="1160" y="918" fill="#10b981">$730,498</text>
+  </g>
+</svg>

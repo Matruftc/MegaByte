@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="600" viewBox="0 0 960 600" fill="none">
+  <defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#0B1023"/><stop offset="1" stop-color="#1C2050"/></linearGradient><linearGradient id="blue" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#60A5FA"/><stop offset="1" stop-color="#A78BFA"/></linearGradient></defs>
+  <rect width="960" height="600" rx="28" fill="url(#bg)"/><circle cx="810" cy="95" r="180" fill="#8B5CF6" opacity=".1"/>
+  <text x="56" y="70" fill="#A5B4FC" font-family="Arial,sans-serif" font-size="18" font-weight="700" letter-spacing="2">MEGABYTE · CAREER GROWTH</text>
+  <text x="56" y="142" fill="#F8FAFC" font-family="Arial,sans-serif" font-size="46" font-weight="750">GenZ Prep Master</text>
+  <text x="58" y="181" fill="#B9C2D6" font-family="Arial,sans-serif" font-size="19">200 high-yield questions. Four focused interview tracks.</text>
+  <rect x="56" y="215" width="848" height="310" rx="20" fill="#0D1325" stroke="#303857"/>
+  <rect x="56" y="215" width="848" height="43" rx="20" fill="#151C33"/><path d="M56 257h848" stroke="#303857"/>
+  <circle cx="80" cy="237" r="5" fill="#FB7185"/><circle cx="98" cy="237" r="5" fill="#FBBF24"/><circle cx="116" cy="237" r="5" fill="#4ADE80"/>
+  <text x="145" y="242" fill="#AAB5CC" font-family="monospace" font-size="13">interview-prep / high-yield tracks</text>
+  <text x="88" y="299" fill="#F1F5F9" font-family="Arial,sans-serif" font-size="20" font-weight="700">Choose your preparation track</text>
+  <g font-family="Arial,sans-serif">
+    <rect x="88" y="322" width="374" height="76" rx="14" fill="#151E37" stroke="#36517E"/><circle cx="123" cy="360" r="18" fill="#3B82F6" fill-opacity=".2"/><text x="123" y="366" text-anchor="middle" fill="#93C5FD" font-size="19">⌘</text><text x="155" y="355" fill="#F1F5F9" font-size="15" font-weight="700">Coding Interviews</text><text x="155" y="378" fill="#9AA8C1" font-size="12">50 questions · Java solutions</text>
+    <rect x="486" y="322" width="374" height="76" rx="14" fill="#151E37" stroke="#51427D"/><circle cx="521" cy="360" r="18" fill="#8B5CF6" fill-opacity=".2"/><text x="521" y="366" text-anchor="middle" fill="#C4B5FD" font-size="19">◎</text><text x="553" y="355" fill="#F1F5F9" font-size="15" font-weight="700">Technical Interviews</text><text x="553" y="378" fill="#9AA8C1" font-size="12">50 core engineering topics</text>
+    <rect x="88" y="414" width="374" height="76" rx="14" fill="#151E37" stroke="#27665D"/><circle cx="123" cy="452" r="18" fill="#10B981" fill-opacity=".2"/><text x="123" y="458" text-anchor="middle" fill="#6EE7B7" font-size="19">★</text><text x="155" y="447" fill="#F1F5F9" font-size="15" font-weight="700">Behavioral · STAR</text><text x="155" y="470" fill="#9AA8C1" font-size="12">50 structured answer guides</text>
+    <rect x="486" y="414" width="374" height="76" rx="14" fill="#151E37" stroke="#7A5A2B"/><circle cx="521" cy="452" r="18" fill="#F59E0B" fill-opacity=".2"/><text x="521" y="458" text-anchor="middle" fill="#FCD34D" font-size="19">⚡</text><text x="553" y="447" fill="#F1F5F9" font-size="15" font-weight="700">Programming &amp; Output</text><text x="553" y="470" fill="#9AA8C1" font-size="12">50 concepts and output challenges</text>
+  </g>
+  <rect x="88" y="502" width="182" height="7" rx="3.5" fill="url(#blue)"/><text x="286" y="510" fill="#91A0B8" font-family="monospace" font-size="12">200 QUESTIONS  ·  4 TRACKS  ·  DUKE AI COACH</text>
+</svg>
