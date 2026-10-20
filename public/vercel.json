@@ -1,0 +1,8 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "functions": {
+    "api/submit-query.js": {
+      "includeFiles": "assets/megabyte-mark.gif"
+    }
+  }
+}

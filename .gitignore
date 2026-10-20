@@ -1,0 +1,14 @@
+.env
+.env.*
+!.env.example
+.vercel
+node_modules/
+.DS_Store
+Thumbs.db
+__pycache__/
+*.py[cod]
+.gradle/
+android/app/build/
+android/build/
+android/capacitor-cordova-android-plugins/build/
+android/app/src/main/assets/public/

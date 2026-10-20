@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Milano Tech Solutions | DB Analytics</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="milano_styles.css">
+</head>
+<body>
+    <!-- Cinematic Video Background -->
+    <div class="video-background">
+        <!-- High quality tech/city building loop -->
+        <video autoplay loop muted playsinline id="bg-video">
+            <source src="https://cdn.pixabay.com/video/2018/10/29/18882-304381014_large.mp4" type="video/mp4">
+        </video>
+        <div class="video-overlay"></div>
+    </div>
+
+    <header class="milano-topbar">
+        <div style="display: flex; align-items: center; gap: 1rem;">
+            <div class="milano-logo-luxury">M</div>
+            <div class="brand">Milano<span>Tech</span></div>
+        </div>
+        <nav style="display: flex; align-items: center;">
+            <a href="../../index.html" class="btn-glow" style="margin-right: 1rem; text-decoration: none;" title="Back to the MegaByte home page">← MegaByte</a>
+            <button id="refreshBtn" class="btn-glow" style="display: none;">Sync Secure Data</button>
+            
+            <!-- Export Dropdown -->
+            <div id="exportDropdown" class="dropdown" style="display: none; margin-left: 1rem;">
+                <button class="btn-glow">Export Report ▾</button>
+                <div class="dropdown-menu">
+                    <a href="#" id="exportCsv">Export as CSV</a>
+                    <a href="#" id="exportPdf">Export as PDF</a>
+                </div>
+            </div>
+
+            <button id="loginBtn" class="btn-glow" style="margin-left: 1rem;">Sign In</button>
+            
+            <!-- Profile Dropdown Menu -->
+            <div id="profileMenu" class="profile-dropdown" style="display: none;">
+                <div class="avatar-circle" id="userAvatar">U</div>
+                <div class="dropdown-menu profile-menu">
+                    <div class="menu-header" id="profileName">User Name</div>
+                    <a href="#" id="viewProfileBtn">View Profile</a>
+                    <a href="#" id="settingsBtn">Settings</a>
+                    <a href="#" id="logoutBtn" style="color: #ef4444;">Log Out</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+    <main class="milano-dashboard">
+        <!-- About Section (Shown when logged out) -->
+        <section id="aboutSection" class="about-section">
+            <div class="about-hero">
+                <h1 class="gradient-text">Welcome to Milano Tech Solutions</h1>
+                <p class="hero-subtitle">We are a premier provider of high-end database analytics and enterprise financial modeling systems, delivering real-time actionable insights into corporate operations.</p>
+            </div>
+            
+            <div class="about-grid">
+                <!-- CEO Profile Card -->
+                <div class="ceo-profile-card">
+                    <div class="ceo-header">
+                        <div class="ceo-avatar">AK</div>
+                        <div class="ceo-titles">
+                            <h3>Amrit Ketan Sahoo</h3>
+                            <span>Chief Executive Officer</span>
+                        </div>
+                    </div>
+                    <div class="ceo-bio">
+                        <p>Amrit Ketan Sahoo is a dedicated IT professional currently serving as an Associate at Accenture in India, based in Bhubaneswar, Odisha. With nearly three years of specialized experience as a Database Administrator, Amrit has developed a robust expertise in managing Microsoft SQL Server environments and navigating Azure cloud services. His technical proficiency extends across SQL Server Management Studio, Cassandra, and Service-now.com, reflecting a strong capability in both traditional database management and modern cloud infrastructure.</p>
+                        <p>A proud alumnus of Ravenshaw University, Amrit earned his Bachelor of Science in Information Technology and Management (Bsc ITM) between 2020 and 2023, graduating with an impressive Grade A. His academic foundation in Cuttack has seamlessly transitioned into his professional career, where he focuses on optimizing database performance and ensuring data integrity. Known for his technical precision and commitment to excellence, Amrit continues to contribute to the technology sector through his role at one of the world's leading professional services companies.</p>
+                    </div>
+                </div>
+
+                <!-- Founders Card -->
+                <div class="founders-card">
+                    <div class="founder-icon-wrapper">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--accent-glow)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                    </div>
+                    <h3>Our Founders</h3>
+                    <p>The visionary architects driving Milano's data enterprise.</p>
+                    <ul class="founders-list-new">
+                        <li><div class="f-avatar">M</div> Matru</li>
+                        <li><div class="f-avatar">B</div> Bisal</li>
+                        <li><div class="f-avatar">S</div> Sardaar</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard Content (Hidden when logged out) -->
+        <div id="dashboardContent" class="dashboard-content" style="display: none; opacity: 0; transition: opacity 0.8s ease;">
+        <header class="dashboard-header">
+            <h1>Corporate Financial Data Engine</h1>
+            <p>Live analysis connected to Milano Database Arrays.</p>
+        </header>
+
+        <!-- Web Components Injection Zone -->
+        <section id="kpiContainer" class="kpi-grid"></section>
+
+        <!-- Real-Time Graphs Injection Zone -->
+        <section class="charts-section" style="margin-top: 3rem;">
+            <div class="chart-container">
+                <canvas id="revenueExpenseChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="deptPieChart"></canvas>
+            </div>
+        </section>
+
+        <!-- Real Data Table Injection Zone -->
+        <section class="data-table-section" style="margin-top: 3rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h2 style="font-size: 1.2rem; color: var(--text-secondary); margin: 0;">Database Transactions</h2>
+                <div id="tableControls" style="display: none; gap: 1rem; align-items: center;">
+                    <button id="prevPage" class="btn-glow" style="padding: 0.3rem 0.8rem;">&laquo; Prev</button>
+                    <span id="pageIndicator" style="font-size: 0.9rem; color: var(--text-secondary); font-weight: bold;">Page 1 of X</span>
+                    <button id="nextPage" class="btn-glow" style="padding: 0.3rem 0.8rem;">Next &raquo;</button>
+                </div>
+            </div>
+            <div id="tableContainer" style="overflow-x: auto; background: #0f172a; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); padding: 1rem;"></div>
+        </section>
+
+        <!-- Employee Insights / Reviews Injection Zone -->
+        <section class="reviews-section" style="margin-top: 3rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h2 style="font-size: 1.2rem; color: var(--text-secondary); margin: 0;">Employee Insights</h2>
+                <button id="leaveReviewBtn" class="btn-glow" style="font-size: 0.85rem; padding: 0.5rem 1rem;">Leave a Note</button>
+            </div>
+            <!-- Add Note / Review Form (Hidden initially) -->
+            <form id="addReviewForm" class="review-form" style="display: none; margin-bottom: 2rem;">
+                <input type="text" id="revName" placeholder="Your Name" required>
+                <input type="text" id="revRole" placeholder="Your Role / Department" required>
+                <textarea id="revText" placeholder="Leave your insight or note..." required></textarea>
+                <button type="submit" class="btn-glow" style="align-self: flex-start;">Post Insight</button>
+            </form>
+            <div id="reviewsContainer" class="reviews-grid"></div>
+        </section>
+        </div>
+    </main>
+    
+    <!-- Milano Insights Bot Widget -->
+    <div class="chat-wrapper">
+        <button id="chatLauncher" class="chat-launcher" aria-label="Open chat">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+        </button>
+        <div id="chatPanel" class="chat-panel" aria-hidden="true">
+            <div class="chat-header">
+                <h3>Milano Insights Bot</h3>
+                <button id="chatClose" aria-label="Close chat">×</button>
+            </div>
+            <div id="chatMessages" class="chat-messages">
+                <div class="chat-message bot"><p>Hi there! Ask me about Milano's revenue, operations, projects, or employee stats.</p></div>
+            </div>
+            <form id="chatForm" class="chat-form">
+                <input type="text" id="chatInput" placeholder="Ask about Milano..." autocomplete="off">
+                <button type="submit">Send</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Transition Overlay -->
+    <div id="transitionOverlay" class="modal-overlay" aria-hidden="true">
+        <div class="milano-spinner"></div>
+        <h2 style="color: var(--text-primary); margin-top: 1.5rem; text-align: center;">Authenticating & Establishing Secure Connection...</h2>
+    </div>
+
+    <!-- Authentication Modal (Login / Register) -->
+    <div id="authModal" class="modal-overlay" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="authTitle">Sign In</h3>
+                <button id="authClose" aria-label="Close modal">×</button>
+            </div>
+            <div class="modal-body">
+                <form id="authForm" class="auth-form">
+                    <input type="text" id="authName" placeholder="Full Name (for new accounts)" style="display: none;">
+                    <input type="email" id="authEmail" placeholder="Email Address" required>
+                    <input type="password" id="authPassword" placeholder="Password (8+ characters, a letter and a number)" required>
+                    <button type="submit" class="btn-glow" style="width: 100%; margin-top: 1rem;">Submit</button>
+                </form>
+                <p class="auth-toggle"><span id="authToggleText">New user? </span><a href="#" id="toggleAuthMode">Register here</a></p>
+                <p class="auth-toggle" style="font-size: 0.8rem; opacity: 0.7;">🔒 Accounts are stored only in this browser; passwords are kept as salted hashes.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Details Modal -->
+    <div id="profileModal" class="modal-overlay" aria-hidden="true">
+        <div class="modal-content" style="text-align: center;">
+            <div class="modal-header">
+                <h3>User Profile</h3>
+                <button id="profileClose" aria-label="Close modal">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="avatar-circle" id="profileModalAvatar" style="width: 80px; height: 80px; font-size: 2.5rem; margin: 0 auto 1.5rem auto; cursor: default;">U</div>
+                <h2 id="profileModalName" style="margin: 0 0 0.5rem 0; color: var(--text-primary);">User Name</h2>
+                <p style="color: var(--accent-glow); margin: 0 0 1.5rem 0;">Milano Enterprise User</p>
+                <div style="background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 8px; text-align: left;">
+                    <p style="margin: 0 0 0.8rem 0; font-size: 0.95rem; color: var(--text-secondary);"><strong>Access Level:</strong> Standard Administrator</p>
+                    <p style="margin: 0; font-size: 0.95rem; color: var(--text-secondary);"><strong>Status:</strong> <span style="color: #10b981;">● Active Connection</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="expenses-data.js"></script>
+    <script src="milano_app.js"></script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" font-family="Arial, Helvetica, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0e0d12"/><stop offset="1" stop-color="#1c1620"/></linearGradient>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fb923c"/><stop offset=".4" stop-color="#f97316"/><stop offset="1" stop-color="#fbbf24"/></linearGradient>
+    <linearGradient id="dbA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fdba74"/><stop offset="1" stop-color="#ea580c"/></linearGradient>
+    <linearGradient id="dbB" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fde68a"/><stop offset="1" stop-color="#f59e0b"/></linearGradient>
+    <radialGradient id="glow" cx=".8" cy=".2" r=".6"><stop offset="0" stop-color="#f97316" stop-opacity=".25"/><stop offset="1" stop-color="#f97316" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="1600" height="1000" fill="url(#bg)"/>
+  <rect width="1600" height="1000" fill="url(#glow)"/>
+  <!-- activity bar -->
+  <rect x="0" y="0" width="84" height="1000" fill="#17141c"/>
+  <g transform="translate(20 18) scale(.7)">
+    <path d="M10 14v36c0 5 10 9 22 9s22-4 22-9V14" fill="url(#dbA)"/>
+    <path d="M10 26c0 5 10 9 22 9s22-4 22-9M10 38c0 5 10 9 22 9s22-4 22-9" fill="none" stroke="#7c2d12" stroke-opacity=".45" stroke-width="2.5"/>
+    <ellipse cx="32" cy="14" rx="22" ry="9" fill="url(#dbB)"/>
+  </g>
+  <g fill="#a19a9f">
+    <rect x="28" y="110" width="28" height="28" rx="7" opacity=".5"/><rect x="28" y="170" width="28" height="28" rx="7" opacity=".5"/>
+    <rect x="28" y="230" width="28" height="28" rx="7" fill="#fbbf24"/><rect x="28" y="290" width="28" height="28" rx="7" opacity=".5"/>
+    <rect x="28" y="350" width="28" height="28" rx="7" opacity=".5"/><rect x="28" y="410" width="28" height="28" rx="7" opacity=".5"/>
+  </g>
+  <rect x="12" y="226" width="4" height="36" rx="2" fill="#fbbf24"/>
+  <!-- title bar + tabs -->
+  <rect x="84" y="0" width="1516" height="64" fill="#0e0d12" opacity=".85"/>
+  <circle cx="114" cy="32" r="7" fill="#ff5f57"/><circle cx="136" cy="32" r="7" fill="#febc2e"/><circle cx="158" cy="32" r="7" fill="#28c840"/>
+  <text x="186" y="40" fill="#f1ece8" font-size="22" font-weight="700">Database<tspan fill="#fbbf24">Academy</tspan></text>
+  <text x="420" y="39" fill="#a19a9f" font-size="16" font-family="Menlo, monospace">database-academy › <tspan fill="#f1ece8">playground.sql</tspan></text>
+  <rect x="1100" y="16" width="250" height="32" rx="8" fill="#fff" opacity=".05"/><text x="1116" y="37" fill="#a19a9f" font-size="15">⌕ Search or jump to…  ⌘K</text>
+  <rect x="1366" y="16" width="200" height="32" rx="16" fill="#fff" opacity=".06"/><text x="1384" y="37" fill="#fbbf24" font-size="15" font-weight="700">🔗 Lv 4</text>
+  <rect x="1446" y="28" width="90" height="8" rx="4" fill="#fff" opacity=".1"/><rect x="1446" y="28" width="52" height="8" rx="4" fill="url(#g)"/>
+  <rect x="84" y="64" width="1516" height="44" fill="#17141c"/>
+  <rect x="84" y="64" width="200" height="44" fill="#0e0d12"/><rect x="84" y="64" width="200" height="3" fill="url(#g)"/>
+  <text x="108" y="92" fill="#f1ece8" font-size="15" font-family="Menlo, monospace">▣ playground.sql</text>
+  <text x="310" y="92" fill="#a19a9f" font-size="15" font-family="Menlo, monospace">predict_result.sql</text>
+  <text x="510" y="92" fill="#a19a9f" font-size="15" font-family="Menlo, monospace">05_joins.sql</text>
+  <!-- heading -->
+  <text x="130" y="176" fill="#fbbf24" font-size="16" font-weight="700" letter-spacing="3" font-family="Menlo, monospace">REAL SQLITE · IN YOUR BROWSER</text>
+  <text x="130" y="232" fill="#f1ece8" font-size="50" font-weight="900">Learn SQL by <tspan fill="url(#g)">querying it.</tspan></text>
+  <!-- schema -->
+  <rect x="130" y="270" width="250" height="690" rx="18" fill="#fff" opacity=".045" stroke="#fff" stroke-opacity=".1"/>
+  <text x="152" y="306" fill="#a19a9f" font-size="13" letter-spacing="2" font-family="Menlo, monospace">SCHEMA · MEGAMART</text>
+  <g font-family="Menlo, monospace" font-size="15">
+    <text x="152" y="344" fill="#f1ece8" font-weight="700">▦ customers</text>
+    <text x="172" y="368" fill="#a19a9f">🔑 id</text><text x="172" y="390" fill="#a19a9f">· name</text><text x="172" y="412" fill="#a19a9f">· city</text>
+    <text x="152" y="450" fill="#f1ece8" font-weight="700">▦ orders</text>
+    <text x="172" y="474" fill="#a19a9f">🔑 id</text><text x="172" y="496" fill="#fb923c">🔗 customer_id</text><text x="172" y="518" fill="#a19a9f">· status</text>
+    <text x="152" y="556" fill="#f1ece8" font-weight="700">▦ order_items</text>
+    <text x="172" y="580" fill="#fb923c">🔗 order_id</text><text x="172" y="602" fill="#fb923c">🔗 product_id</text><text x="172" y="624" fill="#a19a9f">· quantity</text>
+    <text x="152" y="662" fill="#f1ece8" font-weight="700">▦ products</text>
+    <text x="152" y="700" fill="#f1ece8" font-weight="700">▦ employees</text>
+    <text x="152" y="738" fill="#f1ece8" font-weight="700">▦ departments</text>
+  </g>
+  <!-- editor -->
+  <rect x="400" y="270" width="1140" height="330" rx="18" fill="#110f16" stroke="#fff" stroke-opacity=".1"/>
+  <rect x="400" y="270" width="1140" height="48" rx="18" fill="#19151f"/><rect x="400" y="300" width="1140" height="18" fill="#19151f"/>
+  <circle cx="426" cy="294" r="6" fill="#ff5f57"/><circle cx="445" cy="294" r="6" fill="#febc2e"/><circle cx="464" cy="294" r="6" fill="#28c840"/>
+  <text x="490" y="300" fill="#a39aa4" font-size="15" font-family="Menlo, monospace">top_customers.sql</text>
+  <rect x="1440" y="281" width="84" height="28" rx="7" fill="#fbbf24"/><text x="1482" y="301" fill="#1a1400" font-size="15" font-weight="800" text-anchor="middle">▶ Run</text>
+  <g font-family="Menlo, monospace" font-size="21">
+    <g fill="#5a5260" text-anchor="end"><text x="446" y="366">1</text><text x="446" y="400">2</text><text x="446" y="434">3</text><text x="446" y="468">4</text><text x="446" y="502">5</text><text x="446" y="536">6</text><text x="446" y="570">7</text></g>
+    <text x="476" y="366"><tspan fill="#c792ea">SELECT</tspan><tspan fill="#d6deeb"> c.name, </tspan><tspan fill="#82aaff">SUM</tspan><tspan fill="#89ddff">(</tspan><tspan fill="#d6deeb">oi.quantity </tspan><tspan fill="#89ddff">*</tspan><tspan fill="#d6deeb"> oi.unit_price</tspan><tspan fill="#89ddff">)</tspan><tspan fill="#c792ea"> AS</tspan><tspan fill="#d6deeb"> spent</tspan></text>
+    <text x="476" y="400"><tspan fill="#c792ea">FROM</tspan><tspan fill="#d6deeb"> customers c</tspan></text>
+    <text x="476" y="434"><tspan fill="#c792ea">JOIN</tspan><tspan fill="#d6deeb"> orders o </tspan><tspan fill="#c792ea">ON</tspan><tspan fill="#d6deeb"> o.customer_id </tspan><tspan fill="#89ddff">=</tspan><tspan fill="#d6deeb"> c.id</tspan></text>
+    <text x="476" y="468"><tspan fill="#c792ea">JOIN</tspan><tspan fill="#d6deeb"> order_items oi </tspan><tspan fill="#c792ea">ON</tspan><tspan fill="#d6deeb"> oi.order_id </tspan><tspan fill="#89ddff">=</tspan><tspan fill="#d6deeb"> o.id</tspan></text>
+    <text x="476" y="502"><tspan fill="#c792ea">WHERE</tspan><tspan fill="#d6deeb"> o.status </tspan><tspan fill="#89ddff">&lt;&gt;</tspan><tspan fill="#c3e88d"> 'cancelled'</tspan></text>
+    <text x="476" y="536"><tspan fill="#c792ea">GROUP BY</tspan><tspan fill="#d6deeb"> c.id </tspan><tspan fill="#c792ea">ORDER BY</tspan><tspan fill="#d6deeb"> spent </tspan><tspan fill="#c792ea">DESC LIMIT</tspan><tspan fill="#f78c6c"> 3</tspan><tspan fill="#89ddff">;</tspan></text>
+    <rect x="476" y="552" width="3" height="26" fill="#fbbf24"/>
+  </g>
+  <!-- results -->
+  <rect x="400" y="620" width="700" height="340" rx="18" fill="#110f16" stroke="#fff" stroke-opacity=".1"/>
+  <text x="426" y="656" fill="#a39aa4" font-size="14" letter-spacing="2" font-family="Menlo, monospace">RESULTS  <tspan fill="#4ade80">✓ success · 1 result set · 3 ms</tspan></text>
+  <rect x="426" y="676" width="648" height="40" fill="#211b27"/>
+  <g font-family="Menlo, monospace" font-size="18">
+    <text x="446" y="702" fill="#fbbf24" font-weight="700">name</text><text x="1054" y="702" fill="#fbbf24" font-weight="700" text-anchor="end">spent</text>
+    <text x="446" y="748" fill="#ece6e1">Ananya Gupta</text><text x="1054" y="748" fill="#f78c6c" text-anchor="end">97000</text>
+    <rect x="426" y="764" width="648" height="44" fill="#fff" opacity=".025"/>
+    <text x="446" y="794" fill="#ece6e1">Liam Smith</text><text x="1054" y="794" fill="#f78c6c" text-anchor="end">92900</text>
+    <text x="446" y="840" fill="#ece6e1">Chen Wei</text><text x="1054" y="840" fill="#f78c6c" text-anchor="end">85000</text>
+  </g>
+  <text x="446" y="930" fill="#948b95" font-size="14" font-family="Menlo, monospace">3 rows</text>
+  <!-- puzzle -->
+  <rect x="1120" y="620" width="420" height="340" rx="18" fill="#fff" opacity=".045" stroke="#fff" stroke-opacity=".1"/>
+  <text x="1144" y="660" fill="#a19a9f" font-size="14" letter-spacing="3" font-family="Menlo, monospace">🔮 PREDICT THE RESULT</text>
+  <rect x="1144" y="678" width="372" height="62" rx="12" fill="#110f16"/>
+  <text x="1160" y="716" font-family="Menlo, monospace" font-size="17"><tspan fill="#c792ea">SELECT</tspan><tspan fill="#d6deeb"> NULL </tspan><tspan fill="#89ddff">=</tspan><tspan fill="#c792ea"> NULL</tspan><tspan fill="#89ddff">;</tspan></text>
+  <g font-family="Menlo, monospace" font-size="17">
+    <rect x="1144" y="756" width="180" height="48" rx="12" fill="#fff" opacity=".05" stroke="#fff" stroke-opacity=".12"/><text x="1162" y="786" fill="#f1ece8">A  1</text>
+    <rect x="1336" y="756" width="180" height="48" rx="12" fill="#34d399" fill-opacity=".16" stroke="#34d399"/><text x="1354" y="786" fill="#f1ece8">B  NULL</text>
+    <rect x="1144" y="814" width="180" height="48" rx="12" fill="#fff" opacity=".05" stroke="#fff" stroke-opacity=".12"/><text x="1162" y="844" fill="#f1ece8">C  0</text>
+    <rect x="1336" y="814" width="180" height="48" rx="12" fill="#fff" opacity=".05" stroke="#fff" stroke-opacity=".12"/><text x="1354" y="844" fill="#f1ece8">D  TRUE</text>
+  </g>
+  <text x="1144" y="902" fill="#34d399" font-size="18" font-weight="700">✓ Correct!  +15 XP</text>
+  <text x="1144" y="932" fill="#a19a9f" font-size="15">NULL compared with anything is unknown.</text>
+  <!-- status bar -->
+  <rect x="84" y="974" width="1516" height="26" fill="#ea580c"/>
+  <text x="104" y="992" fill="#fff4ea" font-size="13" font-family="Menlo, monospace">⎇ main    ● SQLite 3.44 ready    41/148 known    🔥 3 days</text>
+</svg>

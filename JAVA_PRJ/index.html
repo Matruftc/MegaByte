@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Java Academy · Learn Java by running it</title>
+  <meta name="description" content="Interactive Java learning hub by MegaByte: 45+ explained concepts with runnable code, Java playground, predict-the-output challenges, JUnit 5 quiz mode, 3D flashcards, XP, badges, and Duke AI tutor.">
+  <meta name="author" content="MegaByte · Matru & Bisal">
+  <meta name="theme-color" content="#0a0f1f">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>☕</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css?v=2.3">
+</head>
+<body>
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <div class="aura" aria-hidden="true"></div>
+  <div class="grid-bg" aria-hidden="true"></div>
+
+  <div class="ide">
+    <!-- Activity bar -->
+    <aside class="activity" id="activity">
+      <a class="act-logo" href="#/home" title="Java Academy by MegaByte" data-tip="Java Academy">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 8h1a4 4 0 0 1 0 8h-1"/>
+          <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>
+          <line x1="6" y1="1" x2="6" y2="4"/>
+          <line x1="10" y1="1" x2="10" y2="4"/>
+          <line x1="14" y1="1" x2="14" y2="4"/>
+        </svg>
+      </a>
+      <nav class="act-nav" aria-label="Main">
+        <a href="#/home" data-route="home" data-tip="Home">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/></svg>
+          <span class="nav-label">Home</span>
+        </a>
+        <a href="#/topics" data-route="topics" data-tip="18 Java Modules">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          <span class="nav-label">Topics</span>
+        </a>
+        <div class="act-sep"></div>
+        <a href="#/playground" data-route="playground" data-tip="Interactive Playground">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 4 20 12 6 20 6 4" fill="currentColor"/></svg>
+          <span class="nav-label">Playground</span>
+        </a>
+        <a href="#/arena" data-route="arena" data-tip="Predict Output Challenge">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+          <span class="nav-label">Arena</span>
+        </a>
+        <a href="#/quiz" data-route="quiz" data-tip="JUnit 5 Quiz">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          <span class="nav-label">Quiz</span>
+        </a>
+        <a href="#/flashcards" data-route="flashcards" data-tip="3D Flashcards">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2" ry="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <span class="nav-label">Flashcards</span>
+        </a>
+        <div class="act-sep"></div>
+        <a href="#/search" data-route="search" data-tip="Instant Search (/)">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <span class="nav-label">Search</span>
+        </a>
+        <a href="#/progress" data-route="progress" data-tip="Progress &amp; Badges">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg>
+          <span class="nav-label">Progress</span>
+        </a>
+        <a href="#/dropbox" data-route="dropbox" data-tip="Question Dropbox">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>
+          <span class="nav-label">Dropbox</span>
+        </a>
+        <a href="#/data" data-route="data" data-tip="Database Clusters">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+          <span class="nav-label">Data</span>
+        </a>
+        <div class="act-sep"></div>
+        <a href="#/about" data-route="about" data-tip="About MegaByte">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span class="nav-label">About</span>
+        </a>
+      </nav>
+      <div class="act-bottom">
+        <button class="act-btn" id="themeBtn" data-tip="Toggle Theme (T)" title="Toggle Theme" aria-label="Toggle theme">
+          <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+      </div>
+    </aside>
+
+    <div class="workbench">
+      <!-- Titlebar -->
+      <header class="titlebar">
+        <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <a class="brand" href="#/home">
+          <span>☕</span>
+          <span class="brand-text">Java<b>Academy</b></span>
+        </a>
+        <div class="crumbs" id="crumbs"></div>
+        <a class="cmdk" href="#/search" title="Open Instant Search">
+          <span>⌕</span>
+          <span>Instant Search</span>
+        </a>
+        <a class="xp-pill" id="xpPill" href="#/progress" title="Your XP & Level"></a>
+        <a class="back-home" href="../index.html" title="Back to MegaByte landing page">MegaByte →</a>
+      </header>
+
+      <!-- Main content view -->
+      <main id="app" tabindex="-1"></main>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <span>© 2026 <b>MegaByte</b> · Java Academy · Founded by <a href="#/about" class="link">Matru (Mega) &amp; Bisal (Byte)</a> · All rights reserved</span>
+        <span class="muted"><kbd>⌘K</kbd> palette · <kbd>C</kbd> Duke tutor · <kbd>Space</kbd> flip flashcard</span>
+      </footer>
+
+      <!-- Statusbar -->
+      <div class="statusbar" role="status">
+        <span class="st-item">git: main</span>
+        <span class="st-item"><i class="st-dot"></i> OpenJDK 21.0.3 (HotSpot 64-Bit VM)</span>
+        <span class="st-item" id="stKnown"></span>
+        <span class="st-item" id="stStreak"></span>
+        <span class="spacer"></span>
+        <span class="st-item">UTF-8</span>
+        <span class="st-item">LF</span>
+        <span class="st-item">☕ Java 21</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Opening Curtain Boot Screen -->
+  <div class="curtain closed" id="boot" aria-hidden="true">
+    <div class="panel left"></div>
+    <div class="panel right"></div>
+    <div class="curtain-center">
+      <div class="curtain-logo">☕</div>
+      <div class="curtain-label">Java Academy</div>
+      <div class="curtain-sub" id="bootLog">Initializing JVM &amp; Loading Curriculum...</div>
+    </div>
+  </div>
+
+  <div id="toasts" aria-live="polite"></div>
+
+  <!-- Scripts -->
+  <script src="./data.js"></script>
+  <script src="./db.js"></script>
+  <script src="./app.js?v=java-terminal-2"></script>
+  <script src="./chat.js"></script>
+</body>
+</html>

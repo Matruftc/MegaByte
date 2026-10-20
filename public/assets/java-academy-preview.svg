@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#080C18"/><stop offset="1" stop-color="#11182B"/></linearGradient>
+    <linearGradient id="amber" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#FCD34D"/><stop offset="1" stop-color="#F97316"/></linearGradient>
+    <linearGradient id="hero" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#1B2032"/><stop offset="1" stop-color="#111625"/></linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#000" flood-opacity=".32"/></filter>
+  </defs>
+  <rect width="1200" height="760" rx="28" fill="url(#bg)"/>
+  <!-- Academy IDE frame -->
+  <rect x="34" y="32" width="1132" height="696" rx="24" fill="#0D1220" stroke="#293246" stroke-width="2"/>
+  <rect x="34" y="32" width="65" height="696" rx="24" fill="#090E19"/>
+  <path d="M99 32v696" stroke="#263044"/>
+  <rect x="48" y="50" width="38" height="38" rx="12" fill="url(#amber)"/>
+  <text x="67" y="76" text-anchor="middle" fill="#211408" font-family="Arial,sans-serif" font-size="22" font-weight="700">☕</text>
+  <g font-family="Arial,sans-serif" font-size="18" text-anchor="middle">
+    <rect x="47" y="111" width="40" height="40" rx="12" fill="#F59E0B" fill-opacity=".16" stroke="#F59E0B" stroke-opacity=".5"/><text x="67" y="138" fill="#FCD34D">⌂</text>
+    <text x="67" y="190" fill="#8994A8">▤</text><text x="67" y="235" fill="#8994A8">▶</text><text x="67" y="280" fill="#8994A8">◇</text><text x="67" y="325" fill="#8994A8">⚡</text>
+    <text x="67" y="370" fill="#8994A8">▣</text><text x="67" y="415" fill="#8994A8">⌕</text><text x="67" y="460" fill="#8994A8">★</text>
+  </g>
+  <!-- Title bar -->
+  <circle cx="125" cy="61" r="5" fill="#FB7185"/><circle cx="143" cy="61" r="5" fill="#FBBF24"/><circle cx="161" cy="61" r="5" fill="#4ADE80"/>
+  <text x="188" y="67" fill="#F8FAFC" font-family="Arial,sans-serif" font-size="16" font-weight="700">Java<tspan fill="#FBBF24">Academy</tspan></text>
+  <text x="406" y="66" fill="#8792A7" font-family="Arial,sans-serif" font-size="13">megabyte / home.java</text>
+  <rect x="885" y="44" width="170" height="34" rx="9" fill="#151C2B" stroke="#30394B"/>
+  <text x="905" y="66" fill="#AAB4C5" font-family="Arial,sans-serif" font-size="12">⌕  Search Java Academy</text>
+  <rect x="1072" y="44" width="70" height="34" rx="17" fill="#31240F" stroke="#9A6718"/>
+  <text x="1107" y="66" text-anchor="middle" fill="#FCD34D" font-family="Arial,sans-serif" font-size="12" font-weight="700">☕ Lv 1</text>
+  <path d="M99 94h1067" stroke="#263044"/>
+  <!-- Home hero -->
+  <rect x="127" y="119" width="1004" height="266" rx="19" fill="url(#hero)" stroke="#2B3447" filter="url(#shadow)"/>
+  <text x="158" y="158" fill="#FBBF24" font-family="Arial,sans-serif" font-size="13" font-weight="700" letter-spacing="1.5">JAVA ACADEMY BY MEGABYTE · JAVA 21 LTS</text>
+  <text x="158" y="211" fill="#F8FAFC" font-family="Arial,sans-serif" font-size="36" font-weight="700">Master Java by</text>
+  <text x="158" y="251" fill="#FBBF24" font-family="Arial,sans-serif" font-size="36" font-weight="700">running real code.</text>
+  <text x="158" y="282" fill="#A8B1C2" font-family="Arial,sans-serif" font-size="13">Learn core concepts, explore Java 21 and practice with code.</text>
+  <rect x="158" y="304" width="151" height="38" rx="10" fill="url(#amber)"/>
+  <text x="233" y="328" text-anchor="middle" fill="#201407" font-family="Arial,sans-serif" font-size="13" font-weight="700">▶ Open Playground</text>
+  <rect x="319" y="304" width="137" height="38" rx="10" fill="#1A2130" stroke="#3B465B"/>
+  <text x="387" y="328" text-anchor="middle" fill="#D6DCEA" font-family="Arial,sans-serif" font-size="13">◇ Predict Output</text>
+  <!-- animated-code impression -->
+  <rect x="656" y="142" width="443" height="219" rx="13" fill="#090E19" stroke="#30394B"/>
+  <rect x="656" y="142" width="443" height="35" rx="13" fill="#121A2A"/>
+  <path d="M656 177h443" stroke="#293246"/>
+  <circle cx="675" cy="159" r="4" fill="#FB7185"/><circle cx="689" cy="159" r="4" fill="#FBBF24"/><circle cx="703" cy="159" r="4" fill="#4ADE80"/>
+  <text x="722" y="164" fill="#FCD34D" font-family="monospace" font-size="12">☕ VirtualThreads.java</text>
+  <text x="681" y="204" fill="#C792EA" font-family="monospace" font-size="12">public class <tspan fill="#F8FAFC">VirtualThreads</tspan> {</text>
+  <text x="699" y="227" fill="#C792EA" font-family="monospace" font-size="12">public static void <tspan fill="#82AAFF">main</tspan>(String[] args) {</text>
+  <text x="717" y="250" fill="#A8B1C2" font-family="monospace" font-size="12">System.out.println(</text><text x="847" y="250" fill="#C3E88D" font-family="monospace" font-size="12">"Hello, Java 21!"</text><text x="979" y="250" fill="#A8B1C2" font-family="monospace" font-size="12">);</text>
+  <text x="699" y="273" fill="#C792EA" font-family="monospace" font-size="12">}</text><text x="681" y="296" fill="#C792EA" font-family="monospace" font-size="12">}</text>
+  <rect x="657" y="313" width="441" height="48" rx="0 0 13 13" fill="#070B13"/>
+  <text x="678" y="334" fill="#4ADE80" font-family="monospace" font-size="11">$ java VirtualThreads</text>
+  <text x="678" y="351" fill="#CBD5E1" font-family="monospace" font-size="11">Hello, Java 21!</text>
+  <!-- real project counts -->
+  <g font-family="Arial,sans-serif">
+    <rect x="158" y="354" width="104" height="1" fill="#374151"/>
+  </g>
+  <text x="158" y="372" fill="#FBBF24" font-family="Arial,sans-serif" font-size="12" font-weight="700">45+ concepts</text>
+  <text x="282" y="372" fill="#FBBF24" font-family="Arial,sans-serif" font-size="12" font-weight="700">18 modules</text>
+  <!-- curriculum cards -->
+  <text x="129" y="425" fill="#F8FAFC" font-family="Arial,sans-serif" font-size="19" font-weight="700">☕ 18 Module Roadmap</text>
+  <text x="925" y="424" fill="#8994A8" font-family="Arial,sans-serif" font-size="12">Explore the curriculum →</text>
+  <g>
+    <rect x="127" y="446" width="321" height="111" rx="14" fill="#141B2A" stroke="#2B3447"/>
+    <rect x="464" y="446" width="321" height="111" rx="14" fill="#141B2A" stroke="#2B3447"/>
+    <rect x="801" y="446" width="330" height="111" rx="14" fill="#141B2A" stroke="#2B3447"/>
+    <text x="149" y="478" fill="#FBBF24" font-family="Arial,sans-serif" font-size="21">☕</text>
+    <text x="183" y="477" fill="#E5EAF2" font-family="Arial,sans-serif" font-size="14" font-weight="700">Java Fundamentals</text>
+    <text x="149" y="507" fill="#929DB0" font-family="Arial,sans-serif" font-size="12">Types, variables, operators and control flow</text>
+    <text x="149" y="536" fill="#6F7B90" font-family="Arial,sans-serif" font-size="11">Runnable examples · Practice questions</text>
+    <text x="486" y="478" fill="#A78BFA" font-family="Arial,sans-serif" font-size="21">◇</text>
+    <text x="520" y="477" fill="#E5EAF2" font-family="Arial,sans-serif" font-size="14" font-weight="700">Object-Oriented Java</text>
+    <text x="486" y="507" fill="#929DB0" font-family="Arial,sans-serif" font-size="12">Classes, interfaces and inheritance</text>
+    <text x="486" y="536" fill="#6F7B90" font-family="Arial,sans-serif" font-size="11">Concepts · Code challenges</text>
+    <text x="823" y="478" fill="#60A5FA" font-family="Arial,sans-serif" font-size="21">⌁</text>
+    <text x="857" y="477" fill="#E5EAF2" font-family="Arial,sans-serif" font-size="14" font-weight="700">Modern Java</text>
+    <text x="823" y="507" fill="#929DB0" font-family="Arial,sans-serif" font-size="12">Streams, records and virtual threads</text>
+    <text x="823" y="536" fill="#6F7B90" font-family="Arial,sans-serif" font-size="11">Java 21 · Hands-on learning</text>
+  </g>
+  <!-- status bar -->
+  <rect x="99" y="694" width="1067" height="34" fill="#101827"/>
+  <path d="M99 694h1067" stroke="#293246"/>
+  <circle cx="122" cy="711" r="4" fill="#4ADE80"/>
+  <text x="135" y="715" fill="#9AA6BA" font-family="monospace" font-size="11">OpenJDK 21 · Java Academy</text>
+  <text x="1040" y="715" fill="#9AA6BA" font-family="monospace" font-size="11">UTF-8</text>
+</svg>

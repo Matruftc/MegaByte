@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">MegaByte</string>
+    <string name="title_activity_main">MegaByte</string>
+    <string name="package_name">com.megabyte.app</string>
+    <string name="custom_url_scheme">com.megabyte.app</string>
+</resources>

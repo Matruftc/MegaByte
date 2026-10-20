@@ -1,0 +1,6 @@
+{
+  "name": "GenZ Prep Master · High-Yield Tech & Behavioral Interview Hub",
+  "description": "GenZ Prep: 200 high-frequency interview questions with 90%+ real-world occurrence across 4 core tracks (50 Coding, 50 Technical Interview, 50 Behavioral with STAR, 50 Programming). Featuring in-browser code execution, interactive quizzes, 3D flashcards, and SIA AI Coach.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

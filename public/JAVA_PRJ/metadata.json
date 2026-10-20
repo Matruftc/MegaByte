@@ -1,0 +1,6 @@
+{
+  "name": "Java Academy · Learn Java by Running It",
+  "description": "Interactive Java learning hub by MegaByte: 200+ explained questions with runnable code, Java playground, predict-the-output challenges, JUnit-style quiz mode, flashcards, XP, badges, and Duke tutor.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

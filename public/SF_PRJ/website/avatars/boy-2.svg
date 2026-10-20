@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Kabir">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fde68a"/><stop offset="1" stop-color="#f97316"/></linearGradient>
+    <clipPath id="c"><circle cx="64" cy="64" r="64"/></clipPath>
+  </defs>
+  <g clip-path="url(#c)">
+  <rect width="128" height="128" fill="url(#bg)"/>
+  <circle cx="100" cy="24" r="30" fill="#fff" opacity=".12"/>
+  
+  <path d="M18 128 C18 104 36 94 64 94 C92 94 110 104 110 128 Z" fill="#0f766e"/><path d="M44 98 C50 112 78 112 84 98" fill="none" stroke="#99f6e4" stroke-width="4" opacity=".5"/><path d="M58 106 v12 M70 106 v12" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity=".8"/>
+  
+  <path d="M55 82 h18 v12 c0 5 -18 5 -18 0 z" fill="#a86c3c"/>
+  <ellipse cx="41.5" cy="61" rx="4.5" ry="6" fill="#a86c3c"/><ellipse cx="86.5" cy="61" rx="4.5" ry="6" fill="#a86c3c"/>
+  <ellipse cx="64" cy="60" rx="22" ry="25" fill="#c68652"/>
+  <ellipse cx="54" cy="68" rx="4" ry="2.4" fill="#f28b82" opacity=".35"/><ellipse cx="74" cy="68" rx="4" ry="2.4" fill="#f28b82" opacity=".35"/>
+  <path d="M50 52 q5 -3 10 0 M68 52 q5 -3 10 0" stroke="#120c08" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+  <ellipse cx="55.5" cy="60" rx="2.6" ry="3" fill="#2b1d16"/><ellipse cx="72.5" cy="60" rx="2.6" ry="3" fill="#2b1d16"/>
+  <circle cx="56.4" cy="59" r=".9" fill="#fff"/><circle cx="73.4" cy="59" r=".9" fill="#fff"/>
+  <path d="M63 63 q1 4 -1.5 5" stroke="#a86c3c" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+  
+  <path d="M57 73 Q64 79 71 73" stroke="#9a3b3b" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+  
+  <circle cx="46" cy="44" r="8" fill="#120c08"/><circle cx="54" cy="36" r="9" fill="#120c08"/><circle cx="64" cy="33" r="9.5" fill="#120c08"/><circle cx="74" cy="36" r="9" fill="#120c08"/><circle cx="82" cy="44" r="8" fill="#120c08"/><circle cx="43" cy="52" r="5.5" fill="#120c08"/><circle cx="85" cy="52" r="5.5" fill="#120c08"/>
+  </g>
+</svg>
