@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AWS Academy · Learn Cloud by Building Confidence</title>
+  <meta name="description" content="Learn AWS cloud foundations with guided lessons, service maps, practice questions, flashcards and saved progress from MegaByte AWS Academy.">
+  <meta name="theme-color" content="#101827">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>☁</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css?v=1.8">
+</head>
+<body>
+  <div class="ambient" aria-hidden="true"></div>
+  <div class="layout">
+    <aside class="activity" aria-label="AWS Academy navigation">
+      <a class="logo" href="#/home" title="AWS Academy home">☁</a>
+      <nav class="nav" aria-label="Main menu">
+        <a href="#/home" data-route="home" data-tip="Home" aria-label="Home"><span>⌂</span><i>Home</i></a>
+        <a href="#/topics" data-route="topics" data-tip="Learning paths" aria-label="Learning paths"><span>▤</span><i>Learn</i></a>
+        <a href="#/services" data-route="services" data-tip="Service map" aria-label="Service map"><span>◈</span><i>Services</i></a>
+        <a href="#/quiz" data-route="quiz" data-tip="Practice quiz" aria-label="Practice quiz"><span>✓</span><i>Quiz</i></a>
+        <a href="#/cards" data-route="cards" data-tip="Flashcards" aria-label="Flashcards"><span>▱</span><i>Cards</i></a>
+        <a href="#/search" data-route="search" data-tip="Search" aria-label="Search"><span>⌕</span><i>Search</i></a>
+        <a href="#/progress" data-route="progress" data-tip="Your progress" aria-label="Your progress"><span>▥</span><i>Progress</i></a>
+        <a href="#/about" data-route="about" data-tip="About" aria-label="About"><span>ⓘ</span><i>About</i></a>
+      </nav>
+      <button class="theme" id="themeBtn" type="button" data-tip="Switch theme" aria-label="Switch theme">◐</button>
+    </aside>
+    <div class="workspace">
+      <header class="topbar">
+        <a class="brand" href="#/home"><span class="brand-icon">☁</span><span>AWS <b>Academy</b></span></a>
+        <div class="crumb" id="crumb">megabyte / home</div>
+        <a class="home-link" href="../index.html">← MegaByte</a>
+      </header>
+      <main id="app" tabindex="-1"></main>
+      <footer><span>© 2026 MegaByte · AWS Academy</span><span>Learn cloud concepts at your own pace · Progress stays in this browser</span></footer>
+      <div class="status"><span><i></i> Learning mode</span><span id="statusProgress">0 topics mastered</span><span class="status-spacer"></span><span>AWS foundations</span><span><kbd>T</kbd> theme</span></div>
+    </div>
+  </div>
+  <div class="cloth-curtain" id="boot" aria-hidden="true">
+    <div class="cloth-panel left"></div>
+    <div class="cloth-panel right"></div>
+    <div class="cloth-valance"></div>
+    <div class="cloth-center"><span class="cloth-mark">☁</span><b>AWS Academy</b><small>Cloud foundations</small></div>
+  </div>
+  <script src="./data.js"></script>
+  <script src="./app.js?v=1.7"></script>
+</body>
+</html>

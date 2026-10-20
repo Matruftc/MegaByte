@@ -1121,7 +1121,6 @@
     await db.collection("settings").updateOne({ key: "currentUser" }, { $set: { value: u.id } }, { upsert: true });
     await db.collection("users").updateOne({ id: u.id }, { $set: { lastActiveAt: Date.now() } });
     await loadUserData();
-    updateUserChip();
     document.dispatchEvent(new CustomEvent("sfa:user"));
     toast(`👋 Welcome, ${u.name.split(" ")[0]}! ${note}`);
     render();
@@ -1131,11 +1130,9 @@
     user = null;
     await db.collection("settings").deleteOne({ key: "currentUser" });
     await loadUserData();
-    updateUserChip();
     document.dispatchEvent(new CustomEvent("sfa:user"));
     if (location.hash && location.hash !== "#/") location.hash = "#/";   // navigate() re-renders
     else render();
-    profileModal();
   }
 
   function updateUserChip() {
@@ -1155,8 +1152,7 @@
   // PROFILE page
   function profile(root) {
     if (!user) {
-      root.innerHTML = `<div class="view"><div class="empty">No profile yet. <button class="btn primary" id="mk">Create your profile</button></div></div>`;
-      $("#mk", root).addEventListener("click", () => profileModal());
+      root.innerHTML = `<div class="view"><div class="empty">No profile yet. <a class="btn primary" href="../../index.html">← MegaByte home</a></div></div>`;
       return;
     }
     const known = Object.keys(store.known).length, missed = Object.keys(store.missed).length;
@@ -1210,8 +1206,7 @@
         const data = await readProfileForm(form, user.id);
         await db.collection("users").updateOne({ id: user.id }, { $set: data });
         Object.assign(user, data);
-        updateUserChip();
-        document.dispatchEvent(new CustomEvent("sfa:user"));
+            document.dispatchEvent(new CustomEvent("sfa:user"));
         toast("Profile saved ✓");
         render();
       } catch (ex) { $(".form-error", form).textContent = ex.message; }
@@ -1250,19 +1245,6 @@
       signOut();
     });
   }
-
-  // top-bar user menu
-  const userDrop = $("#userDrop"), userBtn = $("#userBtn");
-  const toggleDrop = open => { userDrop.classList.toggle("open", open); userBtn.setAttribute("aria-expanded", open); };
-  userBtn.addEventListener("click", e => {
-    e.stopPropagation();
-    if (!user) return profileModal();
-    toggleDrop(!userDrop.classList.contains("open"));
-  });
-  document.addEventListener("click", () => toggleDrop(false));
-  $("#switchUser").addEventListener("click", () => { toggleDrop(false); profileModal({ switching: true }); });
-  $("#signOut").addEventListener("click", () => { toggleDrop(false); signOut(); });
-  userDrop.addEventListener("click", e => { if (e.target.closest("a")) toggleDrop(false); });
 
   // ------------------------------------------------------------------ QUESTION DROPBOX
   // Anyone can drop sample questions in any format; they're parsed, auto-tagged and queued in the
@@ -1727,13 +1709,7 @@
       db = await Promise.race([window.SFDB.ready,
         new Promise((_, reject) => setTimeout(() => reject(new Error("database took too long to open")), 8000))]);
       docs = await db.collection("questions").find({}, { sort: { id: 1 } });
-      const cur = await db.collection("settings").findOne({ key: "currentUser" });
-      const saved = cur ? await db.collection("users").findOne({ id: cur.value }) : null;
-      user = saved && saved.auth ? publicUser(saved) : null;   // profiles without a password must sign in again
-      if (user) {
-        await db.collection("users").updateOne({ id: user.id }, { $set: { lastActiveAt: Date.now() } });
-        await loadUserData();
-      }
+      user = null;
     } catch (err) {
       console.error("[db] unavailable, using bundled data:", err);
       db = null; user = null;
@@ -1757,9 +1733,8 @@
     document.dispatchEvent(new CustomEvent("sfa:ready"));
 
     window.addEventListener("hashchange", navigate);
-    updateUserChip();
     render();
-    if (db && !user) setTimeout(() => profileModal(), 900);   // first visit: ask for the user's details
+
     curtainLabel.textContent = "Snowflake Academy";
     const wait = Math.max(0, 700 - (performance.now() - started));
     if (reduceMotion) { curtain.classList.remove("closed"); document.body.classList.remove("curtain-hold"); }

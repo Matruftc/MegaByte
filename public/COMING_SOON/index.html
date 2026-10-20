@@ -50,7 +50,9 @@
       "etl-elt": { name: "ETL/ELT Academy", icon: "🔄", description: "Explore how data moves, transforms and reaches the systems that use it. A practical data pipeline learning experience is on the way.", topics: ["ETL & ELT", "Data pipelines", "Quality & orchestration"] },
       "software-engineering": { name: "Software Engineering Academy", icon: "🛠️", description: "Learn the foundations of designing, building, testing and shipping reliable software. This hands-on academy is in development.", topics: ["Software design", "Development practices", "Testing & delivery"] }
     };
-    const academy = academies[new URLSearchParams(location.search).get("project")] || academies.aws;
+    const requestedProject = new URLSearchParams(location.search).get("project");
+    if (requestedProject === "aws") location.replace("../AWS_PRJ/index.html");
+    const academy = academies[requestedProject] || academies.aws;
     document.title = `${academy.name} · Launching Soon · MegaByte`;
     document.querySelector("#academyIcon").textContent = academy.icon;
     document.querySelector("#academyName").innerHTML = `${academy.name}<span>Launching Soon</span>`;

@@ -15,6 +15,7 @@ Open `http://localhost:8001`. The local Node server serves the site and its API 
 
 - `PY_PRJ/website` — Python Academy
 - `JAVA_PRJ` — Java Academy
+- `AWS_PRJ` — AWS Academy (cloud foundations, lessons, quizzes and service map)
 - `DB_PRJ/website` — Database Academy
 - `SF_PRJ/website` — Snowflake Academy
 - `public` — published static site files used by Capacitor

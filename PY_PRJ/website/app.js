@@ -1235,7 +1235,7 @@ onmessage = async ({ data }) => {
         <aside class="card pg-side no-stagger">
           <h4>Starter snippets</h4>
           <div class="snip-list">${SNIPPETS.map(s => `<button class="snip" data-snip="${esc(s.id)}"><span>${s.icon}</span>${esc(s.title)}</button>`).join("")}</div>
-          <h4>My saved code <small class="muted">${user ? "" : "(sign in to save)"}</small></h4>
+          <h4>My saved code <small class="muted">${user ? "" : "(profile required)"}</small></h4>
           <div class="snip-list" id="mine"><p class="muted small">Nothing saved yet.</p></div>
         </aside>
         <section class="pg-main">
@@ -1369,7 +1369,7 @@ onmessage = async ({ data }) => {
       $$("[data-del]", host).forEach(b => b.addEventListener("click", async () => { await db.collection("snippets").deleteOne({ _id: +b.dataset.del }); drawMine(); }));
     }
     async function saveCode() {
-      if (!db || !user) { toast("Sign in to save code to your profile"); return profileModal(); }
+      if (!db || !user) { toast("Academy profiles are managed from the MegaByte home page."); return; }
       const name = ($("#fname", root).value.trim() || "main.py").replace(/[^\w.\- ]/g, "");
       const existing = await db.collection("snippets").findOne({ userId: user.id, name });
       if (existing) await db.collection("snippets").updateOne({ _id: existing._id }, { $set: { code: ed.value, at: Date.now() } });
@@ -1396,7 +1396,7 @@ onmessage = async ({ data }) => {
     root.innerHTML = `
     <div class="view">
       <div class="page-head"><span class="eyebrow">Your journey</span><h1>🏅 Progress</h1>
-        <p>${user ? "Saved in this browser's database for your profile." : "You're a guest: progress lasts until you close this tab. Sign in to keep it."}</p></div>
+        <p>${user ? "Saved in this browser's database for your profile." : "You're learning as a guest. Progress lasts until you close this tab."}</p></div>
       <div class="grid rank-grid">
         <div class="card rank-card spot">
           <div class="rank-ico">${r.icon}</div>
@@ -1790,7 +1790,6 @@ onmessage = async ({ data }) => {
     await db.collection("users").updateOne({ id: u.id }, { $set: { lastActiveAt: Date.now() } });
     await loadUserData();
     resetAchievements();
-    updateUserChip();
     document.dispatchEvent(new CustomEvent("pya:user"));
     toast(`👋 Welcome, ${esc(u.name.split(" ")[0])}! ${esc(note)}`);
     render();
@@ -1800,7 +1799,6 @@ onmessage = async ({ data }) => {
     await db.collection("settings").deleteOne({ key: "currentUser" });
     await loadUserData();
     resetAchievements();
-    updateUserChip();
     document.dispatchEvent(new CustomEvent("pya:user"));
     if (location.hash && location.hash !== "#/") location.hash = "#/";
     else render();
@@ -1823,8 +1821,7 @@ onmessage = async ({ data }) => {
   // PROFILE page
   function profile(root) {
     if (!user) {
-      root.innerHTML = `<div class="view"><div class="empty">You're learning as a guest. <button class="btn primary" id="mk">Sign in or create a profile</button></div></div>`;
-      $("#mk", root).addEventListener("click", () => profileModal());
+      root.innerHTML = `<div class="view"><div class="empty">You're learning as a guest. <a class="btn primary" href="../../index.html">← MegaByte home</a></div></div>`;
       return;
     }
     const known = Object.keys(store.known).length, r = rank();
@@ -1877,8 +1874,7 @@ onmessage = async ({ data }) => {
         const data = await readProfileForm(form, user.id);
         await db.collection("users").updateOne({ id: user.id }, { $set: data });
         Object.assign(user, data);
-        updateUserChip();
-        document.dispatchEvent(new CustomEvent("pya:user"));
+            document.dispatchEvent(new CustomEvent("pya:user"));
         toast("Profile saved ✓");
         render();
       } catch (ex) { $(".form-error", form).textContent = ex.message; }
@@ -1911,19 +1907,6 @@ onmessage = async ({ data }) => {
       signOut();
     });
   }
-
-  // top-bar user menu
-  const userDrop = $("#userDrop"), userBtn = $("#userBtn");
-  const toggleDrop = open => { userDrop.classList.toggle("open", open); userBtn.setAttribute("aria-expanded", open); };
-  userBtn.addEventListener("click", e => {
-    e.stopPropagation();
-    if (!user) return profileModal();
-    toggleDrop(!userDrop.classList.contains("open"));
-  });
-  document.addEventListener("click", () => toggleDrop(false));
-  $("#switchUser").addEventListener("click", () => { toggleDrop(false); profileModal({ switching: true }); });
-  $("#signOut").addEventListener("click", () => { toggleDrop(false); signOut(); });
-  userDrop.addEventListener("click", e => { if (e.target.closest("a")) toggleDrop(false); });
 
   // ------------------------------------------------------------------ QUESTION DROPBOX
   // Anyone can drop sample questions in any format; they're parsed (Snowflake Academy's shared parser),
@@ -2265,7 +2248,7 @@ onmessage = async ({ data }) => {
       { t: "Toggle light / dark theme", sub: "Action", i: "◐", run: () => $("#themeBtn").click() },
       { t: "Ask Monty (chat tutor)", sub: "Action", i: "🤖", run: () => window.openChat && window.openChat() },
       { t: "Random output puzzle", sub: "Action", i: "🎲", run: () => { const c = CHALLENGES[Math.floor(Math.random() * CHALLENGES.length)]; location.hash = `#/arena?topic=${c.sid}`; } },
-      { t: user ? "Switch user" : "Sign in / create account", sub: "Action", i: "🔑", run: () => profileModal({ switching: !!user }) },
+      { t: "MegaByte home", sub: "Go to", i: "🏠", run: () => { location.href = "../../index.html"; } },
       ...SNIPPETS.map(s => ({ t: `Run snippet: ${s.title}`, sub: "Playground", i: s.icon, run: () => openPlayground(s.code) })),
     ];
     const secs = SECTIONS.map(s => ({ t: s.title, sub: fileOf(s), i: s.icon, run: () => { location.hash = `#/topic/${s.id}`; } }));
@@ -2372,13 +2355,7 @@ onmessage = async ({ data }) => {
       db = await Promise.race([window.PYDB.ready,
         new Promise((_, reject) => setTimeout(() => reject(new Error("database took too long to open")), 8000))]);
       docs = await db.collection("questions").find({}, { sort: { id: 1 } });
-      const cur = await db.collection("settings").findOne({ key: "currentUser" });
-      const saved = cur ? await db.collection("users").findOne({ id: cur.value }) : null;
-      user = saved && saved.auth ? publicUser(saved) : null;
-      if (user) {
-        await db.collection("users").updateOne({ id: user.id }, { $set: { lastActiveAt: Date.now() } });
-        await loadUserData();
-      }
+      user = null;
     } catch (err) {
       console.error("[db] unavailable, using bundled data:", err);
       db = null; user = null;
@@ -2405,7 +2382,6 @@ onmessage = async ({ data }) => {
     document.dispatchEvent(new CustomEvent("pya:ready"));
 
     window.addEventListener("hashchange", navigate);
-    updateUserChip();
     resetAchievements();
     pyState(PY.state);
     render();
@@ -2413,7 +2389,7 @@ onmessage = async ({ data }) => {
     setTimeout(() => {
       bootEl.classList.remove("closed");          // panels slide apart
       setTimeout(() => bootEl.remove(), 1000);
-      if (db && !user && !sessionStorage.getItem("pya.guest")) setTimeout(() => profileModal(), 700);
+
     }, reducedMotion ? 0 : wait);
   }
   $("#year").textContent = new Date().getFullYear();

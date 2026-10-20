@@ -52,7 +52,9 @@
       locked: { name: "Classified Project", icon: "🔒", description: "A confidential enterprise platform under active stealth development. Architecture, security benchmarks, and deployment tooling are being finalized.", topics: ["Stealth Mode", "Enterprise Security", "Cloud Scale", "Coming Soon"] },
       "prashi-institute": { name: "Prashi Institute", icon: "🎓", description: "High-impact tech career acceleration and professional curriculum for engineering minds.", topics: ["Full-Stack Engineering", "System Design", "Cloud & DevOps", "Masterclasses"] }
     };
-    const academy = academies[new URLSearchParams(location.search).get("project")] || academies.aws;
+    const requestedProject = new URLSearchParams(location.search).get("project");
+    if (requestedProject === "aws") location.replace("../AWS_PRJ/index.html");
+    const academy = academies[requestedProject] || academies.aws;
     document.title = `${academy.name} · Launching Soon · MegaByte`;
     document.querySelector("#academyIcon").textContent = academy.icon;
     document.querySelector("#academyName").innerHTML = `${academy.name}<span>Launching Soon</span>`;
