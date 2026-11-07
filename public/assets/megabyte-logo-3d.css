@@ -1,0 +1,13 @@
+/* Dimensional wordmark; each letter retains its drag-to-stretch behavior. */
+.landing .hero-mb .wordmark { perspective:1000px; overflow:visible; }
+.landing .wordmark .w-mega,.landing .wordmark .w-byte { background:none; -webkit-text-fill-color:currentColor; text-shadow:none; }
+.landing .wordmark .w-mega { color:#64d4ff; }
+.landing .wordmark .w-byte { color:#c1a0ff; }
+.landing .wordmark .wordmark-letter {
+ text-shadow:0 -1px 0 rgba(255,255,255,.7),1px 1px 0 var(--logo-edge),2px 2px 0 var(--logo-edge),3px 3px 0 var(--logo-edge),4px 4px 0 var(--logo-edge),5px 5px 0 var(--logo-depth),6px 6px 0 var(--logo-depth),7px 7px 0 var(--logo-depth),8px 8px 0 var(--logo-depth),9px 9px 0 var(--logo-depth),10px 10px 0 var(--logo-depth),12px 16px 16px rgba(0,0,0,.7),0 0 35px var(--logo-glow);
+}
+.landing .wordmark .w-mega { --logo-edge:#147da9; --logo-depth:#0b486c; --logo-glow:rgba(56,189,248,.12); }
+.landing .wordmark .w-byte { --logo-edge:#7954b7; --logo-depth:#432b72; --logo-glow:rgba(167,139,250,.12); }
+@media(max-width:520px){
+ .landing .wordmark .wordmark-letter { text-shadow:0 -1px 0 rgba(255,255,255,.6),1px 1px 0 var(--logo-edge),2px 2px 0 var(--logo-edge),3px 3px 0 var(--logo-depth),4px 4px 0 var(--logo-depth),5px 5px 0 var(--logo-depth),7px 10px 12px rgba(0,0,0,.7); }
+}

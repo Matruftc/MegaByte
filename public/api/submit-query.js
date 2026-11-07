@@ -3,6 +3,8 @@ const path = require("node:path");
 const recentRequests = new Map();
 const WINDOW_MS = 15 * 60 * 1000;
 const MAX_REQUESTS = 5;
+const MAX_TRACKED_IPS = 10000;
+let lastRateLimitSweep = 0;
 const logoGif = fs.readFileSync(path.join(__dirname, "../assets/megabyte-mark.gif")).toString("base64");
 
 const escapeHtml = value => String(value ?? "").replace(/[&<>"']/g, char => ({
@@ -10,8 +12,23 @@ const escapeHtml = value => String(value ?? "").replace(/[&<>"']/g, char => ({
 }[char]));
 
 function reply(res, status, body) {
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("X-Frame-Options", "DENY");
+  res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
+  res.setHeader("Permissions-Policy", "camera=(), geolocation=(), microphone=()");
   res.setHeader("Cache-Control", "no-store");
   return res.status(status).json(body);
+}
+
+function trimRateLimitMap(now) {
+  if (now - lastRateLimitSweep < 60_000 && recentRequests.size < MAX_TRACKED_IPS) return;
+  for (const [key, timestamps] of recentRequests) {
+    const active = timestamps.filter(at => now - at < WINDOW_MS);
+    if (active.length) recentRequests.set(key, active);
+    else recentRequests.delete(key);
+  }
+  while (recentRequests.size >= MAX_TRACKED_IPS) recentRequests.delete(recentRequests.keys().next().value);
+  lastRateLimitSweep = now;
 }
 
 function htmlShell(content) {
@@ -59,6 +76,23 @@ async function sendResendEmail({ from, to, subject, html, text, replyTo }) {
 module.exports = async function handler(req, res) {
   if (req.method !== "POST") return reply(res, 405, { ok: false, error: "Method not allowed." });
 
+  const contentType = String(req.headers["content-type"] || "").toLowerCase();
+  if (!contentType.startsWith("application/json")) return reply(res, 415, { ok: false, error: "Content-Type must be application/json." });
+
+  const origin = req.headers.origin;
+  if (origin) {
+    try {
+      const originUrl = new URL(origin);
+      if (!/^https?:$/.test(originUrl.protocol) || originUrl.host.toLowerCase() !== String(req.headers.host || "").toLowerCase()) {
+        return reply(res, 403, { ok: false, error: "Cross-origin requests are not accepted." });
+      }
+    } catch {
+      return reply(res, 403, { ok: false, error: "Invalid request origin." });
+    }
+  } else if (req.headers["sec-fetch-site"] === "cross-site") {
+    return reply(res, 403, { ok: false, error: "Cross-origin requests are not accepted." });
+  }
+
   const from = process.env.RESEND_FROM_EMAIL;
   const to = process.env.MEGABYTE_TO_EMAIL || "onmegabyte@gmail.com";
   if (!process.env.RESEND_API_KEY || !from) {
@@ -85,6 +119,7 @@ module.exports = async function handler(req, res) {
   const forwardedFor = req.headers["x-forwarded-for"] || "unknown";
   const ip = String(forwardedFor).split(",").pop().trim();
   const now = Date.now();
+  trimRateLimitMap(now);
   const recent = (recentRequests.get(ip) || []).filter(at => now - at < WINDOW_MS);
   if (recent.length >= MAX_REQUESTS) return reply(res, 429, { ok: false, error: "Please wait a little before sending another query." });
   recent.push(now);

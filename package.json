@@ -4,8 +4,13 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "test": "node --test tests/*.test.js",
+    "start": "node server.js",
+    "build:netlify": "node scripts/build-netlify.js",
+    "dev:netlify": "netlify dev",
+    "netlify:login": "netlify login",
+    "netlify:link": "netlify link",
+    "db:status": "node scripts/check-mongodb.js"
   },
   "keywords": [],
   "author": "",
@@ -14,6 +19,14 @@
   "dependencies": {
     "@capacitor/android": "^8.5.2",
     "@capacitor/cli": "^8.5.2",
-    "@capacitor/core": "^8.5.2"
+    "@capacitor/core": "^8.5.2",
+    "mongodb": "^7.8.0"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "devDependencies": {
+    "netlify-cli": "^27.16.2",
+    "mongodb-memory-server": "^10.0.0"
   }
 }

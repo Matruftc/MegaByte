@@ -7,6 +7,45 @@
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
   const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  function safeArithmetic(source) {
+    const compact = String(source).replace(/\s+/g, "");
+    if (!compact || compact.length > 160) return null;
+    const tokens = compact.match(/(?:\d+(?:\.\d*)?|\.\d+)|[()+\-*/%]/g) || [];
+    if (tokens.join("") !== compact) return null;
+    let index = 0;
+    const primary = () => {
+      if (tokens[index] === "(") {
+        index++;
+        const value = expression();
+        if (tokens[index++] !== ")") throw new Error("Invalid expression");
+        return value;
+      }
+      const token = tokens[index++];
+      if (!/^\d|^\./.test(token || "")) throw new Error("Invalid number");
+      return Number(token);
+    };
+    const unary = () => tokens[index] === "+" ? (index++, unary()) : tokens[index] === "-" ? (index++, -unary()) : primary();
+    const term = () => {
+      let value = unary();
+      while (["*", "/", "%"].includes(tokens[index])) {
+        const operator = tokens[index++], right = unary();
+        value = operator === "*" ? value * right : operator === "/" ? value / right : value % right;
+      }
+      return value;
+    };
+    const expression = () => {
+      let value = term();
+      while (["+", "-"].includes(tokens[index])) {
+        const operator = tokens[index++], right = term();
+        value = operator === "+" ? value + right : value - right;
+      }
+      return value;
+    };
+    try {
+      const value = expression();
+      return index === tokens.length && Number.isFinite(value) ? String(value) : null;
+    } catch { return null; }
+  }
 
   const DATA = window.JAVA_DATA || { sections: [], challenges: [], snippets: [] };
   const ALL = DATA.sections.flatMap(s => s.questions);
@@ -16,6 +55,7 @@
   // Local storage state
   const getKnown = () => { try { return JSON.parse(localStorage.getItem("java_known") || "{}"); } catch { return {}; } };
   const setKnown = (id, val) => {
+    queueMicrotask(() => window.MBProgress?.record("java", id, val ? "known" : "cleared"));
     const k = getKnown();
     if (val) k[id] = Date.now(); else delete k[id];
     localStorage.setItem("java_known", JSON.stringify(k));
@@ -39,6 +79,7 @@
 
   const getDays = () => { try { return JSON.parse(localStorage.getItem("java_days") || "[]"); } catch { return []; } };
   const recordActivity = () => {
+    queueMicrotask(() => window.MBProgress?.capture("java"));
     const today = new Date().toISOString().split("T")[0];
     const days = getDays();
     if (days[days.length - 1] !== today) {
@@ -144,8 +185,9 @@
 
   function render() {
     const route = parseRoute();
-    const app = $("#app");
-    app.innerHTML = "";
+    const previous = $("#app");
+    const app = previous.cloneNode(false);
+    previous.replaceWith(app);
 
     // Highlight active icons
     $$("#activity [data-route]").forEach(a => a.classList.toggle("active", a.dataset.route === route));
@@ -510,7 +552,7 @@ public class Records {
             const exp = m[1].trim();
             const sMatch = exp.match(/^"([\s\S]*)"$/);
             if (sMatch) return sMatch[1];
-            try { return String(eval(exp.replace(/\\"/g, '"'))); } catch { return `[Result of: ${exp}]`; }
+            return safeArithmetic(exp) ?? `[Unsupported expression: ${exp.slice(0, 160)}]`;
           });
           out.textContent = lines.join("\n") + "\n\nProcess finished with exit code 0";
         } else {
@@ -637,6 +679,10 @@ public class Records {
     }
 
     function finishSuite() {
+      const history=JSON.parse(localStorage.getItem("java_quizzes")||"[]");
+      history.unshift({at:Date.now(),right:score,total:list.length,best:0,topics:[]});
+      localStorage.setItem("java_quizzes",JSON.stringify(history.slice(0,30)));
+      window.MBProgress?.capture("java");
       const stage = $("#quizStage", root);
       stage.innerHTML = `
         <div style="font-family:var(--mono);font-size:.85rem;background:#050811;padding:16px;border-radius:10px;color:#e2e8f0">
@@ -880,5 +926,24 @@ public class Records {
     }
   }, 700);
 
-  render();
+
+  async function startAccountProgress() {
+    if(window.MBProgress) await window.MBProgress.connect("java", {
+      read:()=>Object.keys(getKnown()).map(itemId=>({academy:"java",itemId,state:"known"})),
+      readStats:()=>({attempts:getAttempts(),runs:getRuns(),days:getDays(),history:JSON.parse(localStorage.getItem("java_quizzes")||"[]")}),
+      apply:(rows,account)=>{
+        const activity=rows.find(r=>r.state==='activity')?.data||{};
+        localStorage.setItem("java_attempts",JSON.stringify(activity.attempts||{}));
+        localStorage.setItem("java_runs",String(activity.runs||0));
+        localStorage.setItem("java_days",JSON.stringify(activity.days||[]));
+        localStorage.setItem("java_quizzes",JSON.stringify(activity.history||[]));
+        const known={};
+        for(const row of rows)if(row.state==="known"||row.state==="completed")known[row.itemId]=Date.parse(row.updatedAt)||Date.now();
+        localStorage.setItem("java_known",JSON.stringify(known));
+        render();
+      }
+    });
+    else render();
+  }
+  startAccountProgress();
 })();

@@ -23,35 +23,21 @@
   // ------------------------------------------------------------------ landing page
   function landing() {
     $("#tagline").textContent = D.brand.tagline;
-    $("#intro").textContent = D.brand.intro;
+    introReveal();
     const liveProjects = D.projects.filter(p => p.status === "Live").length;
     const upcomingProjects = D.projects.filter(p => p.status === "Coming Soon").length;
     $("#stats").innerHTML = [[String(D.founders.length), D.founders.length === 1 ? "founder" : "founders"], [String(liveProjects), liveProjects === 1 ? "live project" : "live projects"], ["1", "market-ready product"], [String(upcomingProjects), upcomingProjects === 1 ? "upcoming project" : "upcoming projects"]]
       .map(([n, l]) => `<div class="stat-mb"><b data-count="${esc(n)}">${esc(n)}</b><span>${esc(l)}</span></div>`).join("");
 
-    $("#projectList").innerHTML = D.projects.map(p => {
+    $("#projectList").innerHTML = D.projects.map((p, index) => {
       const firstLink = p.links[0] || {};
       const previewTarget = firstLink.target ? ` target="${esc(firstLink.target)}" rel="${esc(firstLink.rel || "noopener noreferrer")}"` : "";
       return `
-      <article class="project reveal" id="${esc(p.id)}">
-        <a class="project-shot" href="${esc(firstLink.href || "#")}" aria-label="Open ${esc(p.name)}"${previewTarget}>
-          <img src="${esc(p.preview)}" alt="${esc(p.name)} screenshot" loading="lazy"><span class="live">● ${esc(p.status).toUpperCase()}</span>
-        </a>
-        <div>
-          <span class="kicker">${esc(p.icon)} Featured project</span>
-          <h3>${esc(p.name)}</h3>
-          <p>${esc(p.summary)}</p>
-          <div class="p-stats">${p.stats.map(([n, l]) => `<div><b>${esc(n)}</b><span>${esc(l)}</span></div>`).join("")}</div>
-          <ul class="p-feats">${p.features.map(f => `<li>${esc(f)}</li>`).join("")}</ul>
-          <div class="p-stack">${p.stack.map(t => `<span class="tag">${esc(t)}</span>`).join("")}</div>
-          <div class="p-links">${p.links.map(l => {
-            const attrs = l.target ? ` target="${esc(l.target)}" rel="${esc(l.rel || "noopener noreferrer")}"` : "";
-            return `<a class="mb-btn sm ${p.status === "Coming Soon" ? "coming-soon" : "primary"}" href="${esc(l.href)}"${attrs}>${esc(l.label)}</a>`;
-          }).join("")}</div>
-        </div>
+      <article class="tool-stack-card" id="${esc(p.id)}" style="--tool-index:${Math.min(index, 3)}">
+        <div class="tool-stack-top"><span class="tool-stack-number">${String(index + 1).padStart(2, "0")}</span><div><span class="tool-stack-category">${p.id.endsWith("-academy") ? "LEARNING ACADEMY" : p.id === "resume-builder" ? "CAREER TOOL" : p.id === "milano" ? "ANALYTICS DEMO" : "INTERVIEW PRACTICE"} / ${esc(p.status)}</span><h3>${esc(p.name)}</h3></div><a class="tool-launch" href="${esc(firstLink.href || "#")}"${previewTarget}>${p.status === "Coming Soon" ? "Coming soon" : "Open project"} <span aria-hidden="true">↗</span></a></div>
+        <div class="tool-stack-body"><div class="tool-stack-copy"><p>${esc(p.summary)}</p><div class="tool-stack-stats">${p.stats.slice(0, 3).map(([n, l]) => `<div><b>${esc(n)}</b><span>${esc(l)}</span></div>`).join("")}</div><div class="tool-stack-tags">${p.stack.slice(0, 4).map(t => `<span>${esc(t)}</span>`).join("")}</div>${p.links.length > 1 ? `<div class="tool-extra-links">${p.links.slice(1).map(l => `<a href="${esc(l.href)}"${l.target ? ` target="${esc(l.target)}" rel="noopener noreferrer"` : ""}>${esc(l.label)} ↗</a>`).join("")}</div>` : ""}</div><a class="tool-stack-preview" href="${esc(firstLink.href || "#")}" aria-label="Open ${esc(p.name)}"${previewTarget}><img src="${esc(p.preview)}" alt="${esc(p.name)} interface preview" loading="lazy" width="800" height="500"></a></div>
       </article>`;
     }).join("");
-
 
     $("#founderGrid").innerHTML = D.founders.map(f => `
       <article class="f-card ${side(f)} reveal">
@@ -80,6 +66,49 @@
       secs.forEach((s, i) => { if (s && s.offsetTop <= y) cur = i; });
       links.forEach((a, i) => a.classList.toggle("active", i === cur));
     }, { passive: true });
+  }
+
+  // Match the portfolio About section's word-by-word scroll reveal.
+  function introReveal() {
+    const paragraph = $("#intro");
+    if (!paragraph) return;
+    const text = D.brand.intro;
+    paragraph.textContent = text;
+    const reduced = matchMedia("(prefers-reduced-motion: reduce)");
+    const words = [];
+    function render() {
+      paragraph.textContent = "";
+      paragraph.setAttribute("aria-label", text);
+      const visual = document.createElement("span");
+      visual.setAttribute("aria-hidden", "true");
+      words.length = 0;
+      text.split(/\s+/).forEach((word, index) => {
+        if (index) visual.append(document.createTextNode(" "));
+        const span = document.createElement("span");
+        span.className = "intro-word";
+        span.textContent = word;
+        visual.append(span);
+        words.push(span);
+      });
+      paragraph.append(visual);
+    }
+    let frame = 0;
+    function paint() {
+      frame = 0;
+      const rect = paragraph.getBoundingClientRect();
+      const progress = Math.max(0, Math.min(1, (innerHeight * .9 - rect.top) / (rect.height + innerHeight * .5)));
+      words.forEach((word, index) => {
+        const amount = Math.max(0, Math.min(1, progress * words.length - index));
+        word.style.opacity = reduced.matches ? "1" : String(.4 + amount * .6);
+      });
+    }
+    const schedule = () => { if (!frame) frame = requestAnimationFrame(paint); };
+    render();
+    paint();
+    addEventListener("scroll", schedule, { passive: true });
+    addEventListener("resize", schedule);
+    reduced.addEventListener("change", schedule);
+    document.fonts?.ready.then(schedule);
   }
 
   // ------------------------------------------------------------------ contact & queries
@@ -296,7 +325,8 @@
       drops.forEach((d, i) => {
         const x = i * FS * 1.6 + 6;
         const near = Math.max(0, 1 - Math.hypot(x - mx, d.y - my) / 220);
-        ctx.fillStyle = i % 2 ? `rgba(129,140,248,${.1 + near * .6})` : `rgba(56,189,248,${.1 + near * .6})`;
+        const baseOpacity = document.body.classList.contains("landing") ? .24 : .1;
+        ctx.fillStyle = i % 2 ? `rgba(129,140,248,${baseOpacity + near * (document.body.classList.contains("landing") ? .18 : .6)})` : `rgba(56,189,248,${baseOpacity + near * (document.body.classList.contains("landing") ? .18 : .6)})`;
         ctx.fillText(d.t, x, d.y);
         d.y += d.v;
         if (Math.random() < .01) d.t = d.t === "0" ? "1" : "0";

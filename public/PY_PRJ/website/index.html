@@ -12,6 +12,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css?v=2.3">
+  <link rel="stylesheet" href="../../assets/megabyte-progress.css?v=cloud-1">
 </head>
 <body>
   <canvas id="bg" aria-hidden="true"></canvas>
@@ -23,20 +24,20 @@
     <aside class="activity" id="activity">
       <a class="act-logo py-logo" href="#/" title="Python Academy"></a>
       <nav class="act-nav" aria-label="Main">
-        <a href="#/" data-route="home" data-icon="home" data-tip="Home"></a>
-        <a href="#/topics" data-route="topics" data-icon="topics" data-tip="30+ Topics"></a>
+        <a href="#/" data-route="home" data-icon="home" data-tip="Home"><span class="nav-label">Home</span></a>
+        <a href="#/topics" data-route="topics" data-icon="topics" data-tip="30+ Topics"><span class="nav-label">Topics</span></a>
         <div class="act-sep"></div>
-        <a href="#/playground" data-route="playground" data-icon="play" data-tip="Interactive Playground"></a>
-        <a href="#/arena" data-route="arena" data-icon="arena" data-tip="Predict Output Challenge"></a>
-        <a href="#/quiz" data-route="quiz" data-icon="quiz" data-tip="Interactive Quiz"></a>
-        <a href="#/flashcards" data-route="flashcards" data-icon="cards" data-tip="3D Flashcards"></a>
+        <a href="#/playground" data-route="playground" data-icon="play" data-tip="Interactive Playground"><span class="nav-label">Playground</span></a>
+        <a href="#/arena" data-route="arena" data-icon="arena" data-tip="Predict Output Challenge"><span class="nav-label">Arena</span></a>
+        <a href="#/quiz" data-route="quiz" data-icon="quiz" data-tip="Interactive Quiz"><span class="nav-label">Quiz</span></a>
+        <a href="#/flashcards" data-route="flashcards" data-icon="cards" data-tip="3D Flashcards"><span class="nav-label">Flashcards</span></a>
         <div class="act-sep"></div>
-        <a href="#/search" data-route="search" data-icon="search" data-tip="Instant Search (/)"></a>
-        <a href="#/progress" data-route="progress" data-icon="progress" data-tip="Progress &amp; Badges"></a>
-        <a href="#/dropbox" data-route="dropbox" data-icon="dropbox" data-tip="Question Dropbox"></a>
-        <a href="#/data" data-route="data" data-icon="data" data-tip="Database Explorer"></a>
+        <a href="#/search" data-route="search" data-icon="search" data-tip="Instant Search (/)"><span class="nav-label">Search</span></a>
+        <a href="#/progress" data-route="progress" data-icon="progress" data-tip="Progress &amp; Badges"><span class="nav-label">Progress</span></a>
+        <a href="#/dropbox" data-route="dropbox" data-icon="dropbox" data-tip="Question Dropbox"><span class="nav-label">Dropbox</span></a>
+        <a href="#/data" data-route="data" data-icon="data" data-tip="Database Explorer"><span class="nav-label">Data</span></a>
         <div class="act-sep"></div>
-        <a href="#/about" data-route="about" data-icon="about" data-tip="About MegaByte"></a>
+        <a href="#/about" data-route="about" data-icon="about" data-tip="About MegaByte"><span class="nav-label">About</span></a>
       </nav>
       <div class="act-bottom">
         <button class="act-btn" id="themeBtn" data-tip="Toggle Theme (T)" title="Toggle theme (T)" aria-label="Toggle theme"></button>
@@ -104,7 +105,8 @@
   <script src="db.js"></script>
   <script src="../../SF_PRJ/website/dropbox-parser.js"></script>
   <script src="../../SF_PRJ/website/avatars/avatars.js"></script>
-  <script src="app.js"></script>
+  <script src="../../assets/megabyte-progress.js?v=full-progress-2"></script>
+  <script src="app.js?v=full-progress-2"></script>
   <script src="chat.js"></script>
 </body>
 </html>

@@ -6,16 +6,19 @@
   const esc = value => String(value ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const KEY = "megabyte_etl_academy_v1";
   const readState = () => {
-    try { return { completed: [], bestQuiz: 0, pipelineRuns: 0, ...JSON.parse(localStorage.getItem(KEY) || "{}") }; }
-    catch { return { completed: [], bestQuiz: 0, pipelineRuns: 0 }; }
+    try { return { completed: [], bestQuiz: 0, pipelineRuns: 0, history: [], ...JSON.parse(localStorage.getItem(KEY) || "{}") }; }
+    catch { return { completed: [], bestQuiz: 0, pipelineRuns: 0, history: [] }; }
   };
   let state = readState();
+  let progressAccount = null;
   let quiz = { index: 0, score: 0, answered: false, finished: false };
   const view = $("#view");
   let toastTimer;
 
   function save() {
     localStorage.setItem(KEY, JSON.stringify(state));
+    for(const module of DATA.modules)window.MBProgress?.record("etl-elt",module.id,state.completed.includes(module.id)?"completed":"cleared");
+    window.MBProgress?.capture("etl-elt");
     updateProgress();
   }
   function updateProgress() {
@@ -170,7 +173,11 @@
     if (quiz.finished) {
       const pct = Math.round(quiz.score / DATA.quiz.length * 100);
       view.innerHTML = `<section class="panel" style="max-width:720px;margin:40px auto;text-align:center"><span class="eyebrow">KNOWLEDGE CHECK COMPLETE</span><div style="font-size:3.5rem;margin:14px">${pct >= 75 ? "🏆" : "📚"}</div><h1 style="font-size:2.6rem;margin-left:auto;margin-right:auto">${quiz.score} / ${DATA.quiz.length}</h1><p class="lead" style="margin-left:auto;margin-right:auto">You scored ${pct}%. ${pct >= 75 ? "Strong pipeline fundamentals." : "Review a few modules and give it another run."}</p><button class="btn primary" data-action="retry-quiz">Try again</button> <button class="btn ghost" data-view="curriculum">Review modules</button></section>`;
-      if (quiz.score > state.bestQuiz) { state.bestQuiz = quiz.score; save(); }
+      if(!quiz.recorded){
+        state.history=state.history||[];state.history.unshift({at:Date.now(),right:quiz.score,total:DATA.quiz.length,best:0,topics:[]});state.history=state.history.slice(0,30);
+        if(quiz.score>state.bestQuiz)state.bestQuiz=quiz.score;
+        quiz.recorded=true;save();
+      }
       return;
     }
     const item = DATA.quiz[quiz.index];
@@ -231,7 +238,7 @@
       quiz = { index: 0, score: 0, answered: false, finished: false };
       renderQuiz();
     } else if (action === "reset-progress") {
-      state = { completed: [], bestQuiz: 0, pipelineRuns: 0 };
+      state = { completed: [], bestQuiz: 0, pipelineRuns: 0, history: [] };
       save(); renderProgress(); notify("Progress cleared.");
     }
   });
@@ -245,5 +252,13 @@
   const savedTheme = localStorage.getItem("megabyte_etl_theme");
   if (savedTheme === "light") document.documentElement.dataset.theme = "light";
   window.addEventListener("hashchange", render);
-  render();
+  async function startAccountProgress() {
+    if(window.MBProgress)await window.MBProgress.connect("etl-elt",{
+      read:()=>state.completed.map(itemId=>({academy:"etl-elt",itemId,state:"completed"})),
+      readStats:()=>({bestQuiz:state.bestQuiz,pipelineRuns:state.pipelineRuns,history:state.history||[]}),
+      apply:(rows,account)=>{const activity=rows.find(r=>r.state==='activity')?.data||{};state.bestQuiz=activity.bestQuiz||0;state.pipelineRuns=activity.pipelineRuns||0;state.history=activity.history||[];progressAccount=account?.id||null;state.completed=rows.filter(r=>r.state==="completed"||r.state==="known").map(r=>r.itemId);localStorage.setItem(KEY,JSON.stringify(state));render();}
+    });
+    render();
+  }
+  startAccountProgress();
 })();

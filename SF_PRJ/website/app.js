@@ -17,12 +17,14 @@
   const persist = fn => { if (db && user) fn(db, user.id).catch(err => console.warn("[db]", err)); };
   const pk = (uid, qid) => `${uid}:${qid}`;
   function setPref(key, value) {
+    queueMicrotask(() => window.MBProgress?.capture("snowflake"));
     if (!user) return;
     user.prefs = { ...(user.prefs || {}), [key]: value };
     persist((d, uid) => d.collection("users").updateOne({ id: uid }, { $set: { prefs: user.prefs } }));
   }
   const isKnown = id => !!store.known[id];
   function setKnown(id, val) {
+    queueMicrotask(() => window.MBProgress?.record("snowflake", id, val ? "known" : "cleared"));
     if (val) {
       store.known[id] = Date.now(); delete store.missed[id];
       persist((d, uid) => d.collection("progress").updateOne({ _id: pk(uid, id) },
@@ -33,6 +35,7 @@
     }
   }
   function markMissed(id) {
+    queueMicrotask(() => window.MBProgress?.record("snowflake", id, "missed"));
     const n = store.missed[id] = (store.missed[id] || 0) + 1;
     delete store.known[id];
     persist((d, uid) => d.collection("progress").updateOne({ _id: pk(uid, id) },
@@ -540,6 +543,7 @@
           const rec = { at: Date.now(), right, total: answered, best, topics: [...new Set(qs.slice(0, answered).map(q => q.sid))] };
           store.history.unshift(rec);
           store.history = store.history.slice(0, 30);
+          queueMicrotask(() => window.MBProgress?.capture("snowflake"));
           persist((d, uid) => d.collection("quizzes").insertOne({ ...rec, userId: uid }));
         }
         keyHandler = null;
@@ -758,8 +762,10 @@
     });
     $("#reset", root).addEventListener("click", () => {
       if (!confirm("Reset all progress (known, missed, quiz history)?")) return;
+      window.MBProgress?.clear("snowflake");
       store.known = {}; store.missed = {}; store.history = [];
       persist((d, uid) => Promise.all([d.collection("progress").deleteMany({ userId: uid }), d.collection("quizzes").deleteMany({ userId: uid })]));
+      queueMicrotask(() => window.MBProgress?.capture("snowflake"));
       toast("Progress reset");
       render();
     });
@@ -976,6 +982,7 @@
   // Sign-in modal. Three panes: sign in (existing user), create account (new user) and set password
   // (profiles created before passwords existed must add an email + password once).
   async function profileModal({ switching = false } = {}) {
+    if (window.MBProgress) return window.MBProgress.openAccount();
     if (!db) return;
     $("#profileModal")?.remove();
     const users = await db.collection("users").find({}, { sort: { lastActiveAt: -1 } });
@@ -1127,6 +1134,7 @@
   }
 
   async function signOut() {
+    if (window.MBProgress) { await window.MBProgress.signOut(); return; }
     user = null;
     await db.collection("settings").deleteOne({ key: "currentUser" });
     await loadUserData();
@@ -1731,6 +1739,57 @@
     window.SFA = { get ALL() { return ALL; }, get SECTIONS() { return SECTIONS; }, get db() { return db; },
                    get user() { return user; }, store, isKnown, setKnown, markMissed, esc, toast, shuffle, pct, LEVELS, OWNER };
     document.dispatchEvent(new CustomEvent("sfa:ready"));
+
+
+    if (window.MBProgress) await window.MBProgress.connect("snowflake", {
+      read: async () => {
+        let rows = [
+          ...Object.keys(store.known).map(itemId => ({itemId, state:"known"})),
+          ...Object.keys(store.missed).map(itemId => ({itemId, state:"missed"}))
+        ];
+        if (!rows.length && db && !user) {
+          const previous = await db.collection("settings").findOne({key:"currentUser"});
+          if (previous?.value) rows = (await db.collection("progress").find({userId:previous.value})).map(p=>({itemId:String(p.qid),state:p.status}));
+        }
+        return rows.map(r=>({...r,academy:"snowflake"}));
+      },
+      prepare: async account => {
+        if (!db || !account || user?.id===account.id) return;
+        const cached=await db.collection("users").findOne({id:account.id});
+        if(cached){user={...account,prefs:cached.prefs||{}};await loadUserData();}
+      },
+      readStats: () => {
+        const p = user?.prefs || {};
+        return {history:store.history.slice(0,30).map(({at,right,total,best,topics})=>({at,right,total,best:best||0,topics:topics||[]})),attempts:store.attempts||{},missed:store.missed,
+          prefs:{days:p.days||[],runs:p.runs||0,perfect:!!p.perfect,submitted:!!p.submitted,...(p.lastTopic!=null?{lastTopic:p.lastTopic}:{})}};
+      },
+      apply: async (rows, account) => {
+        const previous = user;
+        user = account ? {...account, prefs:previous?.id===account.id ? previous.prefs || {} : {}} : null;
+        const activity = rows.find(r=>r.state==='activity')?.data || {};
+        store.known = {}; store.missed = {};
+        store.history=activity.history||[];
+        if(store.attempts)store.attempts=activity.attempts||{};
+        if(user)user.prefs={...user.prefs,...(activity.prefs||{})};
+
+
+        for (const row of rows) {
+          if (row.state === "known" || row.state === "completed") store.known[row.itemId] = Date.parse(row.updatedAt) || Date.now();
+          if (row.state === "missed") store.missed[row.itemId] = activity.missed?.[row.itemId] || 1;
+        }
+        if (db && user) {
+          await db.collection("users").updateOne({id:user.id}, {$set:user}, {upsert:true});
+          await db.collection("progress").deleteMany({userId:user.id});
+          const docs=rows.filter(r=>["known","completed","missed"].includes(r.state)).map(r=>({_id:`${user.id}:${r.itemId}`,userId:user.id,qid:/^\d+$/.test(r.itemId)?Number(r.itemId):r.itemId,status:r.state==="completed"?"known":r.state,updatedAt:Date.parse(r.updatedAt)||Date.now()}));
+          if(docs.length)await db.collection("progress").insertMany(docs);
+          await db.collection("quizzes").deleteMany({userId:user.id});
+          if(store.history.length)await db.collection("quizzes").insertMany(store.history.map(h=>({...h,userId:user.id})));
+
+        }
+        if(previous?.id!==user?.id)document.dispatchEvent(new CustomEvent("sfa:user"));
+        render();
+      }
+    });
 
     window.addEventListener("hashchange", navigate);
     render();

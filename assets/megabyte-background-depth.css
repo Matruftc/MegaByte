@@ -1,0 +1,20 @@
+/* A quiet floor grid and static grain over the black landing background. */
+body.landing::after {
+ content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+ opacity:.035;
+ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath fill='%23fff' filter='url(%23n)' d='M0 0h180v180H0z'/%3E%3C/svg%3E");
+ background-repeat:repeat;
+}
+.landing .hero-mb::after {
+ content:""; position:absolute; left:0; right:0; bottom:0; height:330px;
+ z-index:-1; pointer-events:none;
+ background-image:linear-gradient(to right,rgba(139,155,185,.2) 1px,transparent 1px),linear-gradient(to bottom,rgba(139,155,185,.2) 1px,transparent 1px);
+ background-size:70px 55px;
+ transform:perspective(380px) rotateX(58deg); transform-origin:center bottom;
+ mask-image:linear-gradient(to bottom,transparent 5%,#0008 48%,#000 85%),linear-gradient(to right,transparent,#000 22%,#000 78%,transparent);
+ mask-composite:intersect;
+ -webkit-mask-image:linear-gradient(to bottom,transparent 5%,#0008 48%,#000 85%),linear-gradient(to right,transparent,#000 22%,#000 78%,transparent);
+ -webkit-mask-composite:source-in;
+ opacity:.45;
+}
+@media(max-width:520px){.landing .hero-mb::after{height:220px;background-size:48px 42px;opacity:.35}}

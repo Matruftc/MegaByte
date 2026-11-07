@@ -26,11 +26,13 @@
   const persist = fn => { if (db && user) fn(db, user.id).catch(err => console.warn("[db]", err)); };
   const pk = (uid, id) => `${uid}:${id}`;
   function setPref(key, value) {
+    queueMicrotask(() => window.MBProgress?.capture("database"));
     prefs()[key] = value;
     persist((d, uid) => d.collection("users").updateOne({ id: uid }, { $set: { prefs: user.prefs } }));
   }
   const isKnown = id => !!store.known[id];
   function setKnown(id, val) {
+    queueMicrotask(() => window.MBProgress?.record("database", id, val ? "known" : "cleared"));
     if (val) {
       store.known[id] = Date.now(); delete store.missed[id];
       persist((d, uid) => d.collection("progress").updateOne({ _id: pk(uid, id) },
@@ -43,6 +45,7 @@
     achievements();
   }
   function markMissed(id) {
+    queueMicrotask(() => window.MBProgress?.record("database", id, "missed"));
     const n = store.missed[id] = (store.missed[id] || 0) + 1;
     delete store.known[id];
     persist((d, uid) => d.collection("progress").updateOne({ _id: pk(uid, id) },
@@ -51,6 +54,7 @@
     achievements();
   }
   function recordAttempt(cid, correct) {
+    queueMicrotask(() => window.MBProgress?.capture("database"));
     const prev = store.attempts[cid] || { tries: 0, correct: false };
     const a = store.attempts[cid] = { cid, tries: prev.tries + 1, correct: prev.correct || correct, lastCorrect: correct, at: Date.now() };
     persist((d, uid) => d.collection("attempts").updateOne({ _id: pk(uid, "c" + cid) }, { $set: { ...a, userId: uid } }, { upsert: true }));
@@ -857,6 +861,7 @@
           const rec = { at: Date.now(), right, total: answered, best, topics: [...new Set(qs.slice(0, answered).map(q => q.sid))] };
           store.history.unshift(rec);
           store.history = store.history.slice(0, 30);
+          queueMicrotask(() => window.MBProgress?.capture("database"));
           persist((d, uid) => d.collection("quizzes").insertOne({ ...rec, userId: uid }));
           if (right === answered && answered >= 5) setPref("perfect", true);
           activity();
@@ -1434,7 +1439,7 @@ onmessage = async ({ data }) => {
     root.innerHTML = `
     <div class="view">
       <div class="page-head"><span class="eyebrow">Your journey</span><h1>🏅 Progress</h1>
-        <p>${user ? "Saved in this browser's database for your profile." : "You're learning as a guest. Progress lasts until you close this tab."}</p></div>
+        <p>${user ? "Mastered questions are synced to your MegaByte account." : "You're learning as a guest. Progress lasts until you close this tab."}</p></div>
       <div class="grid rank-grid">
         <div class="card rank-card spot">
           <div class="rank-ico">${r.icon}</div>
@@ -1487,9 +1492,11 @@ onmessage = async ({ data }) => {
     });
     $("#reset", root).addEventListener("click", () => {
       if (!confirm("Reset all progress (known, missed, quiz history, puzzles)? XP and badges are recalculated.")) return;
+      window.MBProgress?.clear("database");
       store.known = {}; store.missed = {}; store.history = []; store.attempts = {};
       persist((d, uid) => Promise.all(["progress", "quizzes", "attempts"].map(c => d.collection(c).deleteMany({ userId: uid }))));
       resetAchievements();
+      queueMicrotask(() => window.MBProgress?.capture("database"));
       toast("Progress reset");
       render();
     });
@@ -1703,6 +1710,7 @@ onmessage = async ({ data }) => {
 
   // Sign-in modal with two panes: sign in (existing user) and create account (new user).
   async function profileModal({ switching = false } = {}) {
+    if (window.MBProgress) return window.MBProgress.openAccount();
     if (!db) return toast("The database isn't available, so profiles can't be saved in this browser.");
     $("#profileModal")?.remove();
     const users = await db.collection("users").find({}, { sort: { lastActiveAt: -1 } });
@@ -1834,6 +1842,7 @@ onmessage = async ({ data }) => {
     render();
   }
   async function signOut() {
+    if (window.MBProgress) { await window.MBProgress.signOut(); return; }
     user = null;
     await db.collection("settings").deleteOne({ key: "currentUser" });
     await loadUserData();
@@ -2421,6 +2430,59 @@ onmessage = async ({ data }) => {
                    store, isKnown, setKnown, markMissed, recordAttempt, esc, inline, hl, codeBlock, toast, shuffle, pct, LEVELS, OWNER, CHALLENGES,
                    openPlayground, rank, streak, get keysBusy() { return !!keyHandler; } };
     document.dispatchEvent(new CustomEvent("dba:ready"));
+
+
+    if (window.MBProgress) await window.MBProgress.connect("database", {
+      read: async () => {
+        let rows = [
+          ...Object.keys(store.known).map(itemId => ({itemId, state:"known"})),
+          ...Object.keys(store.missed).map(itemId => ({itemId, state:"missed"}))
+        ];
+        if (!rows.length && db && !user) {
+          const previous = await db.collection("settings").findOne({key:"currentUser"});
+          if (previous?.value) rows = (await db.collection("progress").find({userId:previous.value})).map(p=>({itemId:String(p.qid),state:p.status}));
+        }
+        return rows.map(r=>({...r,academy:"database"}));
+      },
+      prepare: async account => {
+        if (!db || !account || user?.id===account.id) return;
+        const cached=await db.collection("users").findOne({id:account.id});
+        if(cached){user={...account,prefs:cached.prefs||{}};await loadUserData();}
+      },
+      readStats: () => {
+        const p = prefs();
+        return {history:store.history.slice(0,30).map(({at,right,total,best,topics})=>({at,right,total,best:best||0,topics:topics||[]})),attempts:store.attempts||{},missed:store.missed,
+          prefs:{days:p.days||[],runs:p.runs||0,perfect:!!p.perfect,submitted:!!p.submitted,...(p.lastTopic!=null?{lastTopic:p.lastTopic}:{})}};
+      },
+      apply: async (rows, account) => {
+        const previous = user;
+        user = account ? {...account, prefs:previous?.id===account.id ? previous.prefs || {} : {}} : null;
+        const activity = rows.find(r=>r.state==='activity')?.data || {};
+        store.known = {}; store.missed = {};
+        store.history=activity.history||[];
+        if(store.attempts)store.attempts=activity.attempts||{};
+        if(user)user.prefs={...user.prefs,...(activity.prefs||{})};
+        if(!user)guestPrefs=activity.prefs||{};
+
+        for (const row of rows) {
+          if (row.state === "known" || row.state === "completed") store.known[row.itemId] = Date.parse(row.updatedAt) || Date.now();
+          if (row.state === "missed") store.missed[row.itemId] = activity.missed?.[row.itemId] || 1;
+        }
+        if (db && user) {
+          await db.collection("users").updateOne({id:user.id}, {$set:user}, {upsert:true});
+          await db.collection("progress").deleteMany({userId:user.id});
+          const docs=rows.filter(r=>["known","completed","missed"].includes(r.state)).map(r=>({_id:`${user.id}:${r.itemId}`,userId:user.id,qid:/^\d+$/.test(r.itemId)?Number(r.itemId):r.itemId,status:r.state==="completed"?"known":r.state,updatedAt:Date.parse(r.updatedAt)||Date.now()}));
+          if(docs.length)await db.collection("progress").insertMany(docs);
+          await db.collection("quizzes").deleteMany({userId:user.id});
+          if(store.history.length)await db.collection("quizzes").insertMany(store.history.map(h=>({...h,userId:user.id})));
+          await db.collection("attempts").deleteMany({userId:user.id});
+          if(Object.keys(store.attempts).length)await db.collection("attempts").insertMany(Object.values(store.attempts).map(a=>({...a,_id:`${user.id}:c${a.cid}`,userId:user.id})));
+
+        }
+        if(previous?.id!==user?.id)document.dispatchEvent(new CustomEvent("dba:user"));
+        render();
+      }
+    });
 
     window.addEventListener("hashchange", navigate);
     resetAchievements();

@@ -1,0 +1,52 @@
+/* One cohesive catalog, restrained surfaces, and an interactive sample. */
+.landing .path-studio-grid .path-tile { background:#191919; border-color:#ffffff20; box-shadow:none; }
+.landing .path-studio-grid .path-tile:hover { background:#202020; border-color:var(--accent); box-shadow:none; transform:translateY(-2px); }
+.landing .path-studio-grid .path-tile:before { opacity:.7; width:2px; }
+.landing .path-studio-grid .path-tile .path-symbol { background:transparent; border-color:var(--accent); color:var(--accent); }
+.path-snowflake{--accent:#7dd3fc}.path-python{--accent:#f8d66d}.path-aws{--accent:#f4b56d}.path-etl{--accent:#67d9c0}.path-sql{--accent:#b9a1ed}.path-java{--accent:#f5aa97}.path-resume{--accent:#e9a3c7}.path-interview{--accent:#c4b5fd}.path-upcoming{--accent:#9da7b4}
+.landing .path-studio-grid .path-tile .path-category,.landing .path-studio-grid .path-tile .path-tile-bottom{color:#a6adb7}
+.landing .path-studio-grid .path-tile .path-tile-body p{color:#b2b8c1;line-height:1.75}
+.landing .path-studio-grid .path-tile .path-tile-arrow{background:transparent;border-color:#ffffff25}
+.landing #bits{opacity:1}.landing .mb-mark{animation:none;box-shadow:none}
+.landing .path-studio .project-filters{margin-bottom:16px;padding:20px;background:#141414;grid-template-columns:minmax(200px,2fr) 1fr 1fr auto;border-radius:14px}
+.landing .path-studio .project-filters label{text-align:left}.landing .path-studio .project-result-count{text-align:left;margin:12px 0 24px}
+.landing .path-studio .project-empty{margin-bottom:20px}
+#learningCardGrid>[hidden]{display:none!important}#learning-paths{scroll-margin-top:100px}
+.landing-menu-button{display:none}
+.sample-lesson{max-width:1180px;margin:10px auto 0;padding:80px 30px 30px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.sample-copy h2{font-size:clamp(2.3rem,4vw,3.8rem);line-height:1.1;letter-spacing:-.05em;margin:20px 0 25px;font-weight:800;text-wrap:balance}.sample-copy>p{font-size:16px;color:#a0a6ae;line-height:1.85;max-width:430px}.sample-link{display:inline-block;margin-top:20px;font-size:14px;color:#b9dcf0}
+.sample-exercise{padding:28px;background:#161616;border:1px solid #ffffff24;border-radius:20px;min-width:0}.sample-exercise-top{display:flex;justify-content:space-between;gap:15px;font:10px var(--mono);letter-spacing:.04em;color:#a6adb7;border-bottom:1px solid #ffffff20;padding-bottom:20px;margin-bottom:22px}.sample-exercise>p{font-size:15px;line-height:1.7}.sample-exercise pre{background:#0c0c0c;border:1px solid #ffffff18;border-radius:10px;padding:22px 18px;font:14px/1.9 var(--mono);color:#d7e2ea;overflow-x:auto;margin:20px 0}.sample-blank{color:#7dd3fc}.sample-exercise fieldset{border:0;padding:0;margin:0}.sample-exercise legend{font-size:12px;color:#a0a6ae;margin-bottom:14px}.sample-options{display:flex;flex-wrap:wrap;gap:9px}.sample-options button{font:600 12px var(--mono);color:#e8edf1;background:#232323;border:1px solid #ffffff30;border-radius:7px;padding:12px;cursor:pointer}.sample-options button:hover{border-color:#7dd3fc}.sample-options button[aria-pressed=true]{background:#20303b;border-color:#7dd3fc}.sample-exercise .sample-feedback{font-size:13px;color:#b0b8c4;line-height:1.8;min-height:75px;margin:22px 0 0}.sample-feedback[data-correct=true]{color:#a8dfc5}.sample-exercise table{width:100%;border-collapse:collapse;text-align:left;font:12px var(--mono)}.sample-exercise th,.sample-exercise td{padding:10px;border-bottom:1px solid #ffffff20}.sample-result-label{font-size:11px;color:#a0a6ae;margin:8px 0}.sample-link:focus-visible,.sample-options button:focus-visible,.landing-menu-button:focus-visible{outline:3px solid #7dd3fc;outline-offset:4px}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:1100px){.landing .path-studio .project-filters{grid-template-columns:repeat(2,minmax(0,1fr))}.landing .path-studio .project-search-field{grid-column:1/-1}.landing .path-studio .project-filters button{grid-column:1/-1;justify-self:start}.sample-lesson{gap:40px}}
+@media(max-width:900px){.landing .mb-nav{position:sticky;flex-wrap:nowrap;justify-content:space-between;padding:16px 20px}.landing-menu-button{display:flex;align-items:center;gap:12px;border:1px solid #ffffff30;border-radius:8px;padding:10px 15px;color:#e8edf1;background:#1b1b1b;font:500 13px var(--font);cursor:pointer}.landing .mb-nav .mb-links{display:none;position:absolute;left:16px;right:16px;top:calc(100% + 8px);flex-direction:column;align-items:stretch;gap:4px;margin:0;padding:14px;border:1px solid #ffffff30;border-radius:16px;background:#171717;box-shadow:0 22px 50px #0008;overflow:visible}.landing .mb-nav .mb-links.menu-visible{display:flex}.landing .mb-nav .mb-links a{padding:13px 15px;font-size:15px}.landing .mb-nav .mb-signin{max-width:none;text-align:left;padding:13px 15px;margin-top:5px;border-radius:9px}.sample-lesson{grid-template-columns:1fr;max-width:760px;padding:60px 25px 20px;gap:30px}.sample-copy>p{max-width:100%}}
+@media(max-width:520px){.landing .path-studio .project-filters{padding:16px 12px;gap:16px 10px}.landing .path-studio .project-filters label{font-size:11px}.landing .path-studio .project-filters input,.landing .path-studio .project-filters select{font-size:16px;padding-left:8px;padding-right:8px}.sample-lesson{padding:50px 20px 10px}.sample-copy h2{font-size:2.6rem}.sample-exercise{padding:20px}.sample-exercise-top{font-size:8px}.sample-options button{padding:11px 9px;font-size:11px}.sample-exercise pre{font-size:12px;padding:18px 12px}#learning-paths{scroll-margin-top:95px}}
+@media(prefers-reduced-motion:reduce){.landing .path-studio-grid .path-tile:hover{transform:none}}
+/* Wide course rectangles with soft, muted subject colors. */
+.landing .path-studio-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; grid-auto-rows:1fr; }
+.landing .path-studio-grid .path-tile { min-height:190px; padding:22px 25px; gap:18px; border-radius:10px; background:linear-gradient(115deg,var(--course-tint),var(--course-tint)); border-color:var(--course-border); }
+.path-snowflake { --course-tint:#164865; --course-border:#7dd3fc38; }
+.path-python { --course-tint:#49421f; --course-border:#f8d66d38; }
+.path-aws { --course-tint:#59371f; --course-border:#f4b56d38; }
+.path-etl { --course-tint:#174c43; --course-border:#67d9c038; }
+.path-sql { --course-tint:#40305d; --course-border:#b9a1ed38; }
+.path-java { --course-tint:#58312b; --course-border:#f5aa9738; }
+.path-upcoming { --course-tint:#344254; --course-border:#9da7b438; }
+.landing .path-studio-grid .path-tile:hover { background:linear-gradient(115deg,var(--course-tint),#222 150%); border-color:var(--accent); }
+.landing .path-studio-grid .path-tile .path-tile-body p { max-width:100%; }
+.landing .path-studio-grid .path-tile .path-tile-bottom { padding-top:12px; }
+@media(max-width:600px) {
+ .landing .path-studio-grid { grid-template-columns:1fr; gap:14px; }
+ .landing .path-studio-grid .path-tile { min-height:190px; padding:20px; gap:16px; border-radius:10px; }
+}
+/* Compact rectangular course tiles. */
+.landing .path-studio-grid { grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
+.landing .path-studio-grid .path-tile { min-height:145px; padding:16px; gap:10px; border-radius:8px; }
+.landing .path-studio-grid .path-tile .path-symbol { width:27px; height:27px; font-size:11px; border-radius:6px; }
+.landing .path-studio-grid .path-tile .path-tile-body h3 { font-size:16px; margin-bottom:6px; }
+.landing .path-studio-grid .path-tile .path-tile-body p { font-size:11px; line-height:1.5; }
+.landing .path-studio-grid .path-tile .path-tile-bottom { padding-top:8px; font-size:9px; }
+.landing .path-studio-grid .path-tile .path-tile-arrow { width:22px; height:22px; font-size:13px; }
+@media(max-width:900px) { .landing .path-studio-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media(max-width:600px) { .landing .path-studio-grid { grid-template-columns:1fr; gap:10px; } .landing .path-studio-grid .path-tile { min-height:130px; padding:15px 17px; gap:8px; } }
+
+/* Keep supporting text clear over the colored skill tiles. */
+.landing .path-studio-grid .path-tile .path-tile-body p,.landing .path-studio-grid .path-tile .path-category,.landing .path-studio-grid .path-tile .path-tile-bottom { color:#d3dbe4; }

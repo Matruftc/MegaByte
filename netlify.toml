@@ -1,0 +1,35 @@
+[build]
+  command = "npm run build:netlify"
+  publish = "dist-netlify"
+  functions = "netlify/functions"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+[functions]
+  node_bundler = "esbuild"
+  external_node_modules = ["mongodb"]
+  included_files = ["node_modules/mongodb/**", "node_modules/bson/**", "node_modules/@mongodb-js/saslprep/**", "node_modules/mongodb-connection-string-url/**", "node_modules/whatwg-url/**", "node_modules/tr46/**", "node_modules/webidl-conversions/**", "node_modules/punycode/**", "node_modules/sparse-bitfield/**", "node_modules/memory-pager/**"]
+
+[functions."submit-query"]
+  included_files = ["assets/megabyte-mark.gif"]
+
+[dev]
+  command = "npm start"
+  targetPort = 8001
+  port = 8888
+  autoLaunch = false
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), geolocation=(), microphone=()"
+    Strict-Transport-Security = "max-age=31536000"
+
+[[headers]]
+  for = "/api/*"
+  [headers.values]
+    Cache-Control = "no-store"

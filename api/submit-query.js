@@ -1,15 +1,22 @@
 const fs = require("node:fs");
 const path = require("node:path");
-const recentRequests = new Map();
-const WINDOW_MS = 15 * 60 * 1000;
-const MAX_REQUESTS = 5;
-const logoGif = fs.readFileSync(path.join(__dirname, "../assets/megabyte-mark.gif")).toString("base64");
+const { rateLimit } = require("../lib/auth");
+// Local handlers and Netlify's bundled entrypoint have different directories.
+const logoPath = [
+  path.join(__dirname, "../assets/megabyte-mark.gif"),
+  path.join(process.cwd(), "assets/megabyte-mark.gif"),
+].find(candidate => fs.existsSync(candidate));
+const logoGif = logoPath ? fs.readFileSync(logoPath).toString("base64") : null;
 
 const escapeHtml = value => String(value ?? "").replace(/[&<>"']/g, char => ({
   "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
 }[char]));
 
 function reply(res, status, body) {
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("X-Frame-Options", "DENY");
+  res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
+  res.setHeader("Permissions-Policy", "camera=(), geolocation=(), microphone=()");
   res.setHeader("Cache-Control", "no-store");
   return res.status(status).json(body);
 }
@@ -34,6 +41,7 @@ function htmlShell(content) {
 async function sendResendEmail({ from, to, subject, html, text, replyTo }) {
   const response = await fetch("https://api.resend.com/emails", {
     method: "POST",
+    signal: AbortSignal.timeout(15000),
     headers: {
       Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
       "Content-Type": "application/json",
@@ -44,12 +52,12 @@ async function sendResendEmail({ from, to, subject, html, text, replyTo }) {
       subject,
       html,
       text,
-      attachments: [{
+      attachments: logoGif ? [{
         filename: "megabyte-mark.gif",
         content: logoGif,
         content_type: "image/gif",
         content_id: "megabyte-logo",
-      }],
+      }] : [],
       ...(replyTo ? { reply_to: replyTo } : {}),
     }),
   });
@@ -58,6 +66,23 @@ async function sendResendEmail({ from, to, subject, html, text, replyTo }) {
 
 module.exports = async function handler(req, res) {
   if (req.method !== "POST") return reply(res, 405, { ok: false, error: "Method not allowed." });
+
+  const contentType = String(req.headers["content-type"] || "").toLowerCase();
+  if (!contentType.startsWith("application/json")) return reply(res, 415, { ok: false, error: "Content-Type must be application/json." });
+
+  const origin = req.headers.origin;
+  if (origin) {
+    try {
+      const originUrl = new URL(origin);
+      if (!/^https?:$/.test(originUrl.protocol) || originUrl.host.toLowerCase() !== String(req.headers.host || "").toLowerCase()) {
+        return reply(res, 403, { ok: false, error: "Cross-origin requests are not accepted." });
+      }
+    } catch {
+      return reply(res, 403, { ok: false, error: "Invalid request origin." });
+    }
+  } else if (req.headers["sec-fetch-site"] === "cross-site") {
+    return reply(res, 403, { ok: false, error: "Cross-origin requests are not accepted." });
+  }
 
   const from = process.env.RESEND_FROM_EMAIL;
   const to = process.env.MEGABYTE_TO_EMAIL || "onmegabyte@gmail.com";
@@ -82,13 +107,11 @@ module.exports = async function handler(req, res) {
     return reply(res, 400, { ok: false, error: "Please check your name, email and query." });
   }
 
-  const forwardedFor = req.headers["x-forwarded-for"] || "unknown";
-  const ip = String(forwardedFor).split(",").pop().trim();
-  const now = Date.now();
-  const recent = (recentRequests.get(ip) || []).filter(at => now - at < WINDOW_MS);
-  if (recent.length >= MAX_REQUESTS) return reply(res, 429, { ok: false, error: "Please wait a little before sending another query." });
-  recent.push(now);
-  recentRequests.set(ip, recent);
+  try {
+    if (!await rateLimit(req, 'contact-query', 5)) {
+      return reply(res, 429, { ok: false, error: "Please wait a little before sending another query." });
+    }
+  } catch { return reply(res, 503, { ok: false, error: "Contact service is temporarily unavailable." }); }
 
   const safeName = escapeHtml(name);
   const safeEmail = escapeHtml(email);

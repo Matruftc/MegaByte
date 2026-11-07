@@ -12,6 +12,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css?v=2.3">
+  <link rel="stylesheet" href="../../assets/megabyte-progress.css?v=cloud-1">
 </head>
 <body>
   <canvas id="bg" aria-hidden="true"></canvas>
@@ -23,17 +24,17 @@
     <aside class="activity" id="activity">
       <a class="act-logo py-logo" href="#/" title="Database Academy"></a>
       <nav class="act-nav" aria-label="Main">
-        <a href="#/" data-route="home" data-icon="home" data-tip="Home"></a>
-        <a href="#/topics" data-route="topics" data-icon="topics" data-tip="Topics"></a>
-        <a href="#/playground" data-route="playground" data-icon="data" data-tip="SQL playground"></a>
-        <a href="#/arena" data-route="arena" data-icon="arena" data-tip="Predict the result"></a>
-        <a href="#/quiz" data-route="quiz" data-icon="quiz" data-tip="Quiz"></a>
-        <a href="#/flashcards" data-route="flashcards" data-icon="cards" data-tip="Flashcards"></a>
-        <a href="#/search" data-route="search" data-icon="search" data-tip="Search (/)"></a>
-        <a href="#/progress" data-route="progress" data-icon="progress" data-tip="Progress & badges"></a>
-        <a href="#/dropbox" data-route="dropbox" data-icon="dropbox" data-tip="Question Dropbox"></a>
-        <a href="#/data" data-route="data" data-icon="save" data-tip="My data (browser storage)"></a>
-        <a href="#/about" data-route="about" data-icon="about" data-tip="About MegaByte"></a>
+        <a href="#/" data-route="home" data-icon="home" data-tip="Home" aria-label="Home"><span class="nav-label">Home</span></a>
+        <a href="#/topics" data-route="topics" data-icon="topics" data-tip="Topics" aria-label="Topics"><span class="nav-label">Topics</span></a>
+        <a href="#/playground" data-route="playground" data-icon="data" data-tip="SQL playground"><span class="nav-label">Playground</span></a>
+        <a href="#/arena" data-route="arena" data-icon="arena" data-tip="Predict the result"><span class="nav-label">Arena</span></a>
+        <a href="#/quiz" data-route="quiz" data-icon="quiz" data-tip="Quiz"><span class="nav-label">Quiz</span></a>
+        <a href="#/flashcards" data-route="flashcards" data-icon="cards" data-tip="Flashcards"><span class="nav-label">Flashcards</span></a>
+        <a href="#/search" data-route="search" data-icon="search" data-tip="Search (/)"><span class="nav-label">Search</span></a>
+        <a href="#/progress" data-route="progress" data-icon="progress" data-tip="Progress & badges"><span class="nav-label">Progress</span></a>
+        <a href="#/dropbox" data-route="dropbox" data-icon="dropbox" data-tip="Question Dropbox"><span class="nav-label">Dropbox</span></a>
+        <a href="#/data" data-route="data" data-icon="save" data-tip="My data (browser storage)"><span class="nav-label">Data</span></a>
+        <a href="#/about" data-route="about" data-icon="about" data-tip="About MegaByte"><span class="nav-label">About</span></a>
       </nav>
       <div class="act-bottom">
         <button class="act-btn" id="themeBtn" title="Toggle theme (T)" aria-label="Toggle theme"></button>
@@ -101,7 +102,8 @@
   <script src="db.js"></script>
   <script src="../../SF_PRJ/website/dropbox-parser.js"></script>
   <script src="../../SF_PRJ/website/avatars/avatars.js"></script>
-  <script src="app.js?v=guest-mode-launch-fix-1"></script>
+  <script src="../../assets/megabyte-progress.js?v=full-progress-2"></script>
+  <script src="app.js?v=full-progress-2"></script>
   <script src="chat.js"></script>
 </body>
 </html>

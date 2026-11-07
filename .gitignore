@@ -12,3 +12,6 @@ android/app/build/
 android/build/
 android/capacitor-cordova-android-plugins/build/
 android/app/src/main/assets/public/
+
+.netlify/
+dist-netlify/

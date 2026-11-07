@@ -1,22 +1,17 @@
 (() => {
   "use strict";
-  const USERS = "megabyte.localUsers", CURRENT = "megabyte.localUser";
   const CHARACTERS = ["🧑‍🚀", "🦊", "🐱", "🐼", "🦉", "🤖", "🧙", "🐉"];
   const BACKGROUNDS = [
     ["aurora", "Aurora"], ["ocean", "Ocean"], ["sunset", "Sunset"], ["forest", "Forest"], ["cosmic", "Cosmic"]
   ];
-  const read = () => { try { return JSON.parse(localStorage.getItem(USERS) || "[]"); } catch { return []; } };
-  const encode = bytes => btoa(String.fromCharCode(...new Uint8Array(bytes)));
-  async function hash(password, salt, iterations = 150000) {
-    if (!crypto.subtle) throw new Error("Sign in requires HTTPS or localhost.");
-    salt ||= crypto.getRandomValues(new Uint8Array(16));
-    const key = await crypto.subtle.importKey("raw", new TextEncoder().encode(password), "PBKDF2", false, ["deriveBits"]);
-    const bits = await crypto.subtle.deriveBits({ name: "PBKDF2", hash: "SHA-256", salt, iterations }, key, 256);
-    return { salt: encode(salt), hash: encode(bits), iterations };
+  async function accountRequest(body) {
+    const response = await fetch("/api/auth", { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok || !result.ok) throw new Error(result.error || "Account service is temporarily unavailable.");
+    return result;
   }
   const validEmail = value => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value);
-  let users = read();
-  let active = users.find(user => user.id === localStorage.getItem(CURRENT)) || null;
+  let active = null;
   const trigger = document.querySelector("#mbSignIn");
   if (!trigger) return;
   const applyAppearance = user => {
@@ -36,16 +31,23 @@
     { name: "Python", icon: "🐍", db: "MegaBytePythonAcademy", data: "PY_PRJ/website/data.js", global: "PY_DATA", storage: "progress.json", kind: "questions" },
     { name: "Database", icon: "🗄️", db: "MegaByteDatabaseAcademy", data: "DB_PRJ/website/data.js", global: "DB_DATA", storage: "progress.json", kind: "questions" },
     { name: "Java", icon: "☕", data: "JAVA_PRJ/data.js", global: "JAVA_DATA", storage: "java_known", kind: "java" },
-    { name: "GenZ Prep Master", icon: "⚡", data: "GenZ%20Prep%20Master%20_PRJ/data.js", global: "GENZ_DATA", storage: "genz_known", kind: "java" },
+    { name: "GenZ Prep Master", icon: "⚡", data: "GenZ%20Prep%20Master%20_PRJ/data.js", global: "JAVA_DATA", storage: "genz_known", kind: "java" },
   ];
-  const loadAcademyData = item => new Promise(resolve => {
-    if (window[item.global]) return resolve(window[item.global]);
-    const script = document.createElement("script");
-    script.src = new URL(item.data, document.baseURI).href;
-    script.onload = () => resolve(window[item.global] || null);
-    script.onerror = () => resolve(null);
-    document.head.append(script);
-  });
+  const academyData = new Map();
+  function loadAcademyData(item) {
+    // Java and GenZ both declare JAVA_DATA. Cache the result by source URL,
+    // capturing each script's own value on load rather than reusing globals.
+    if (academyData.has(item.data)) return academyData.get(item.data);
+    const promise = new Promise(resolve => {
+      const script = document.createElement("script");
+      script.src = new URL(item.data, document.baseURI).href;
+      script.onload = () => resolve(window[item.global] || null);
+      script.onerror = () => { academyData.delete(item.data); resolve(null); };
+      document.head.append(script);
+    });
+    academyData.set(item.data, promise);
+    return promise;
+  }
   const clusterDocuments = text => {
     try { return JSON.parse(text || "{}").documents || []; } catch { return []; }
   };
@@ -57,52 +59,21 @@
     if (item.kind === "lessons") total = (data?.modules || []).reduce((sum, module) => sum + (module.lessons || []).length, 0);
     if (item.kind === "modules") total = (data?.modules || []).length;
 
-    let completed = 0;
-    try {
-      if (item.kind === "questions" && item.db) {
-        const progressKey = `${item.db}/progress.json`;
-        let text = localStorage.getItem(progressKey);
-        if (window.indexedDB?.databases) {
-          const databases = await indexedDB.databases();
-          if (databases.some(entry => entry.name === item.db)) {
-            const db = await new Promise((resolve, reject) => {
-              const req = indexedDB.open(item.db);
-              req.onsuccess = () => resolve(req.result);
-              req.onerror = () => reject(req.error);
-              req.onupgradeneeded = () => { req.transaction.abort(); };
-            });
-            if (db.objectStoreNames.contains("clusters")) {
-              text = await new Promise((resolve, reject) => {
-                const req = db.transaction("clusters", "readonly").objectStore("clusters").get("progress.json");
-                req.onsuccess = () => resolve(req.result?.json || text);
-                req.onerror = () => reject(req.error);
-              });
-            }
-            db.close();
-          }
-        }
-        const known = new Set(clusterDocuments(text).filter(doc => doc.status === "known").map(doc => doc.qid ?? doc._id));
-        completed = known.size;
-      } else if (item.kind === "java") {
-        const known = JSON.parse(localStorage.getItem(item.storage) || "{}");
-        completed = Object.keys(known).length;
-      } else if (item.kind === "lessons") {
-        const done = JSON.parse(localStorage.getItem(item.storage) || "[]");
-        completed = Array.isArray(done) ? done.length : 0;
-      } else if (item.kind === "modules") {
-        const state = JSON.parse(localStorage.getItem(item.storage) || "{}");
-        completed = Array.isArray(state.completed) ? state.completed.length : 0;
-      }
-    } catch { /* Keep any progress available from the local fallback. */ }
-    return { completed: Math.min(completed, total), total };
+    const ids={"Snowflake":"snowflake","AWS":"aws","ETL/ELT":"etl-elt","Python":"python","Database":"database","Java":"java","GenZ Prep Master":"genz-prep"};
+    const rows=window.MBProgress?.snapshot(ids[item.name]) || [];
+    const completed=new Set(rows.filter(r=>r.state==="known"||r.state==="completed").map(r=>r.itemId)).size;
+    return {completed:Math.min(completed,total),total};
   }
+
   async function renderAcademyProgress(container) {
-    container.innerHTML = `<div class="mb-progress-heading"><div><span class="kicker">YOUR LEARNING</span><h3>Progress by academy</h3></div><span class="mb-progress-device">Saved on this browser</span></div><p class="mb-progress-loading">Loading your saved progress…</p>`;
+    container.innerHTML = `<div class="mb-progress-heading"><div><span class="kicker">YOUR LEARNING</span><h3>Progress by academy</h3></div><span class="mb-progress-device">Your account</span></div><p class="mb-progress-loading">Loading your saved progress…</p>`;
+    await window.MBProgress?.refresh();
+    if(window.MBProgress?.issue){container.textContent="Account progress could not load. Please retry when online.";return;}
     const values = await Promise.all(ACADEMIES.map(async item => ({ item, ...(await readAcademyProgress(item)) })));
-    container.innerHTML = `<div class="mb-progress-heading"><div><span class="kicker">YOUR LEARNING</span><h3>Progress by academy</h3></div><span class="mb-progress-device">Saved on this browser</span></div><div class="mb-progress-list">${values.map(({ item, completed, total }) => {
+    container.innerHTML = `<div class="mb-progress-heading"><div><span class="kicker">YOUR LEARNING</span><h3>Progress by academy</h3></div><span class="mb-progress-device">Your account</span></div><div class="mb-progress-list">${values.map(({ item, completed, total }) => {
       const percent = total ? Math.round(completed / total * 100) : 0;
       return `<article class="mb-progress-row"><div class="mb-progress-row-top"><span class="mb-progress-name"><span>${item.icon}</span>${item.name}</span><span class="mb-progress-count">${completed} / ${total} · ${percent}%</span></div><div class="mb-progress-track" role="progressbar" aria-label="${item.name} progress" aria-valuenow="${percent}" aria-valuemin="0" aria-valuemax="100"><i style="width:${percent}%"></i></div></article>`;
-    }).join("")}</div><p class="mb-progress-note">Counts reflect completed lessons or mastered questions saved in this browser.</p>`;
+    }).join("")}</div><p class="mb-progress-note">Completed lessons and mastered questions are saved to your MegaByte account. Sign back in after clearing browser data to restore them.</p>`;
   }
 
   function openDialog(settings = false) {
@@ -110,9 +81,9 @@
     dialog.className = "mb-auth-backdrop";
     dialog.innerHTML = `<section class="mb-auth-dialog" role="dialog" aria-modal="true" aria-labelledby="mbAuthTitle">
       <button class="mb-auth-close" type="button" aria-label="Close">×</button>
-      <span class="kicker">MEGABYTE ACCOUNT · THIS BROWSER</span>
+      <span class="kicker">MEGABYTE ACCOUNT · SECURE SESSION</span>
       <h2 id="mbAuthTitle">${settings ? "Your account" : "Welcome to MegaByte"}</h2>
-      <p class="mb-auth-intro">${settings ? "Make this space yours. Your choices are saved to this browser." : "Sign in or create a local account. Choose your character and background when you create your account."}</p>
+      <p class="mb-auth-intro">${settings ? "Make this space yours. Your profile is saved to your MegaByte account." : "Sign in or create your MegaByte account to keep your profile with you."}</p>
       <div class="mb-auth-tabs" role="tablist" aria-label="Account action" ${settings ? "hidden" : ""}>
         <button type="button" role="tab" aria-selected="true" data-mode="signin">Sign in</button>
         <button type="button" role="tab" aria-selected="false" data-mode="create">Create account</button>
@@ -130,7 +101,7 @@
       </form>
       ${settings ? '<section class="mb-progress-summary" aria-label="Academy progress"></section>' : ""}
       <button class="mb-auth-signout" type="button" ${settings ? "" : "hidden"}>Sign out</button>
-      <p class="mb-auth-note">Accounts are checked only against profiles stored in this browser. Academy progress remains stored separately.</p>
+      <p class="mb-auth-note">Mastered questions and completed lessons sync to this account. Guest progress stays on this device until you choose to import it.</p>
     </section>`;
     document.body.append(dialog);
     if (settings) renderAcademyProgress(dialog.querySelector(".mb-progress-summary"));
@@ -171,42 +142,40 @@
     dialog.querySelectorAll("[data-mode]").forEach(tab => tab.onclick = () => setMode(tab.dataset.mode));
     dialog.querySelectorAll("[data-character]").forEach(button => button.onclick = () => chooseCharacter(+button.dataset.character));
     dialog.querySelectorAll("[data-background]").forEach(button => button.onclick = () => chooseBackground(button.dataset.background));
-    signout.onclick = () => { active = null; localStorage.removeItem(CURRENT); paint(); dismiss(); };
+    signout.onclick = async () => {
+      signout.disabled = true;
+      try { await window.MBProgress?.flush(); await accountRequest({ action: "logout" }); active = null; await window.MBProgress?.accountChanged(); paint(); dismiss(); }
+      catch (err) { error.textContent = err.message; signout.disabled = false; }
+    };
     dialog.addEventListener("click", event => { if (event.target === dialog) dismiss(); });
     dialog.addEventListener("keydown", event => { if (event.key === "Escape") dismiss(); });
 
     form.onsubmit = async event => {
       event.preventDefault(); error.textContent = "";
       if (mode === "settings") {
-        users = read();
-        const index = users.findIndex(user => user.id === active?.id);
-        if (index < 0) { error.textContent = "This account is no longer available in this browser."; return; }
-        users[index] = { ...users[index], avatar: CHARACTERS[character], background };
-        active = users[index]; localStorage.setItem(USERS, JSON.stringify(users)); paint(); dismiss(); return;
+        submit.disabled = true;
+        try { active = (await accountRequest({ action: "profile", avatar: CHARACTERS[character], background })).user; paint(); dismiss(); }
+        catch (err) { error.textContent = err.message; }
+        finally { submit.disabled = false; }
+        return;
       }
       const name = form.elements.name.value.trim();
       const email = form.elements.email.value.trim().toLowerCase();
       const password = form.elements.password.value;
       if (!validEmail(email)) { error.textContent = "Enter a valid email address, such as name@example.com."; form.elements.email.focus(); return; }
       if (password.length < 8) { error.textContent = "Use a password with at least 8 characters."; form.elements.password.focus(); return; }
-      users = read();
-      const existing = users.find(user => user.email.toLowerCase() === email);
       submit.disabled = true;
       try {
         if (mode === "create") {
-          if (existing) throw new Error("This email already has an account on this browser. Choose Sign in instead.");
           if (name.length < 2) throw new Error("Enter your name to create an account.");
-          const auth = await hash(password);
-          active = { id: `mb_${Date.now().toString(36)}_${crypto.getRandomValues(new Uint32Array(1))[0].toString(36)}`, name, email, auth, avatar: CHARACTERS[character], background, createdAt: Date.now() };
-          users.push(active); localStorage.setItem(USERS, JSON.stringify(users));
+          active = (await accountRequest({ action: "register", name, email, password, avatar: CHARACTERS[character], background })).user;
         } else {
-          if (!existing) throw new Error("No account with this email is saved in this browser. Choose Create account to register.");
-          const salt = Uint8Array.from(atob(existing.auth.salt), char => char.charCodeAt(0));
-          const check = await hash(password, salt, existing.auth.iterations);
-          if (check.hash !== existing.auth.hash) throw new Error("The password does not match this account.");
-          active = existing;
+          active = (await accountRequest({ action: "login", email, password })).user;
         }
-        localStorage.setItem(CURRENT, active.id); paint(); dismiss();
+        await window.MBProgress?.accountChanged();
+        paint(); dismiss();
+        const target = new URLSearchParams(location.search).get("returnTo");
+        if(target) {const url=new URL(target,location.origin);if(url.origin===location.origin)location.assign(url.href);}
       } catch (err) { error.textContent = err.message; }
       finally { submit.disabled = false; }
     };
@@ -215,6 +184,19 @@
     else form.elements.email.focus();
   }
 
+  addEventListener('megabyte:progress', () => {
+    if(window.MBProgress?.loading) return;
+    if(window.MBProgress && active?.id !== window.MBProgress.user?.id) {
+      active=window.MBProgress.user;paint();
+      document.querySelector('.mb-auth-backdrop')?.remove();
+    }
+  });
+  trigger.disabled = true;
+  trigger.textContent = "Loading account…";
   trigger.addEventListener("click", () => active ? openDialog(true) : openDialog(false));
-  paint();
+  fetch("/api/auth", { credentials: "same-origin" })
+    .then(response => response.json())
+    .then(result => { active = result?.ok ? result.user : null; })
+    .catch(() => { active = null; })
+    .finally(() => { paint(); trigger.disabled = false; if(new URLSearchParams(location.search).has("account")) openDialog(Boolean(active)); });
 })();

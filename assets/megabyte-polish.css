@@ -1,0 +1,78 @@
+/* Landing-page refinement, inspired by the founder portfolios. */
+.landing .section { padding-top:clamp(100px,11vw,150px); }
+.landing .section .section-head { max-width:850px; margin:0 auto 56px; }
+.landing .section .section-head .kicker,.showcase-heading .kicker { font-size:11px; letter-spacing:.2em; }
+.landing .section .section-head h2 { font-size:clamp(2.4rem,5.2vw,4.5rem); font-weight:850; letter-spacing:-.05em; line-height:1.08; margin:18px 0 22px; text-wrap:balance; }
+.landing .section .section-head p { max-width:660px; margin:0 auto; font-size:clamp(1rem,1.5vw,1.12rem); line-height:1.8; }
+.landing .hero-tag { max-width:780px; font-size:clamp(1.25rem,2.6vw,1.9rem); font-weight:650; letter-spacing:-.035em; text-wrap:balance; }
+.landing .hero-path-heading h2 { font-weight:750; font-size:clamp(1.6rem,3vw,2.1rem); line-height:1.2; }
+.landing .hero-path-heading p { max-width:600px; }
+.landing .market-grid { gap:28px; }
+.landing .project { margin-bottom:32px; }
+.landing .project h3 { letter-spacing:-.04em; line-height:1.15; }
+.landing .project p { line-height:1.8; }
+.landing .stats-mb { margin-top:64px; margin-bottom:30px; }
+.academy-showcase { max-width:1280px; margin:12px auto 0; padding:60px 40px 35px; border-top:1px solid rgba(148,163,184,.18); border-bottom:1px solid rgba(148,163,184,.18); }
+.showcase-heading { display:flex; justify-content:space-between; align-items:end; gap:32px; margin-bottom:36px; }
+.showcase-heading h2 { color:#eaf2ff; font-size:clamp(2.3rem,5vw,4.3rem); line-height:1.05; font-weight:850; letter-spacing:-.05em; margin:18px 0 20px; }
+.showcase-heading p { color:var(--muted); margin:0; font-size:1rem; line-height:1.7; max-width:550px; }
+.showcase-controls { display:flex; gap:10px; flex-shrink:0; padding-bottom:3px; }
+.showcase-controls button { width:48px; height:48px; display:grid; place-items:center; border:1px solid rgba(148,163,184,.35); border-radius:50%; background:rgba(255,255,255,.05); color:#eaf2ff; font:24px var(--font); cursor:pointer; transition:background .2s,border-color .2s; }
+.showcase-controls button:hover:enabled { background:rgba(56,189,248,.15); border-color:#38bdf8; }
+.showcase-controls button:disabled { opacity:.3; cursor:default; }
+.academy-preview-rail { display:flex; gap:24px; overflow-x:auto; overscroll-behavior-inline:contain; scroll-snap-type:x mandatory; scrollbar-width:thin; scrollbar-color:#536688 transparent; padding:5px 4px 24px; scroll-padding-inline:4px; }
+.academy-preview { flex:0 0 min(440px,76vw); min-width:0; scroll-snap-align:start; border:1px solid rgba(148,163,184,.2); background:linear-gradient(145deg,#101f3b,#0b152c); border-radius:20px; overflow:hidden; transition:border-color .2s; }
+.academy-preview:hover { border-color:#818cf8; }
+.academy-preview>img { width:100%; height:auto; aspect-ratio:16/10; object-fit:cover; object-position:top; display:block; background:#091326; border-bottom:1px solid rgba(148,163,184,.16); transition:filter .2s; }
+.academy-preview:hover>img { filter:brightness(1.08); }
+.academy-preview-details { display:flex; align-items:center; gap:16px; padding:22px; }
+.preview-number { font:11px var(--mono); color:#7d94b6; align-self:flex-start; padding-top:4px; }
+.academy-preview-details h3 { margin:0 0 8px; color:#eaf2ff; font-size:1.15rem; font-weight:700; letter-spacing:-.025em; }
+.academy-preview-details p { margin:0; color:var(--muted); font-size:.75rem; line-height:1.6; }
+.preview-open { margin-left:auto; color:#7dd3fc; font-size:1.4rem; }
+.showcase-hint { display:flex; align-items:center; gap:10px; color:#9aabc3; font-size:.73rem; margin:18px 4px 0; }
+.showcase-hint>span:last-child { margin-left:auto; }
+.showcase-controls button:focus-visible,.academy-preview:focus-visible,.academy-preview-rail:focus-visible { outline:3px solid #7dd3fc; outline-offset:3px; }
+@media(max-width:900px) { .academy-showcase { margin-left:24px; margin-right:24px; padding:45px 0 30px; } }
+@media(max-width:520px) {
+ .landing .section { padding-top:80px; }
+ .landing .section .section-head { margin-bottom:36px; }
+ .landing .section .section-head h2 { font-size:2.5rem; margin:16px 0 20px; }
+ .landing .section .section-head p { line-height:1.75; }
+ .landing .hero-tag { font-size:1.3rem; }
+ .landing .market-grid { gap:24px; }
+ .landing .stats-mb { margin:48px 16px 0; }
+ .academy-showcase { margin:0 20px; padding-top:38px; }
+ .showcase-heading { gap:15px; flex-wrap:wrap; margin-bottom:25px; }
+ .showcase-heading h2 { font-size:2.55rem; }
+ .showcase-heading p { font-size:.92rem; }
+ .showcase-controls button { width:42px; height:42px; }
+ .academy-preview-rail { gap:18px; }
+ .academy-preview { flex-basis:82vw; border-radius:16px; }
+ .academy-preview-details { padding:19px 16px; gap:12px; }
+ .academy-preview-details h3 { font-size:1rem; }
+ .showcase-hint { flex-wrap:wrap; gap:7px; }
+ .showcase-hint>span:last-child { width:100%; margin-left:0; }
+}
+@media(prefers-reduced-motion:reduce) { .academy-preview,.academy-preview>img,.showcase-controls button { transition:none; } }
+
+/* Stretch individual letters without moving the surrounding layout. */
+.landing .wordmark .wordmark-letter { display:inline-block; animation:none; transform-origin:center bottom; transition:transform .35s cubic-bezier(.2,.8,.25,1); }
+@media(hover:hover) and (pointer:fine) {
+ .landing .wordmark .wordmark-letter:hover { transform:scaleY(1.3) scaleX(.94); }
+}
+@media(prefers-reduced-motion:reduce) {
+ .landing .wordmark .wordmark-letter { transition:none; }
+ .landing .wordmark .wordmark-letter:hover { transform:none; }
+}
+
+/* Pull a letter in either direction; release to spring back. */
+@media(hover:hover) and (pointer:fine) {
+ .landing .wordmark .wordmark-letter { cursor:grab; user-select:none; -webkit-user-select:none; transition:transform .7s cubic-bezier(.18,1.5,.3,1); position:relative; }
+ .landing .wordmark .wordmark-letter:hover { transform:scaleY(1.08); }
+ .landing .wordmark .wordmark-letter.is-stretching { cursor:grabbing; transition:none; z-index:2; }
+}
+@media(prefers-reduced-motion:reduce) {
+ .landing .wordmark .wordmark-letter { cursor:default; transition:none; }
+ .landing .wordmark .wordmark-letter:hover { transform:none; }
+}

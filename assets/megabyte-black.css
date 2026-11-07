@@ -1,0 +1,38 @@
+/* Portfolio-inspired black theme for the landing page. */
+body.landing { --bg:#0c0c0c; --bg2:#141414; --card:rgba(255,255,255,.035); --card2:rgba(255,255,255,.065); --line:rgba(255,255,255,.14); --text:#e8edf1; --muted:#a0a6ae; background:#0c0c0c; }
+.landing>.aurora { display:none; }
+.landing>#bits { opacity:1; }
+.landing .mb-nav,.landing .mb-nav.scrolled { background:rgba(12,12,12,.94); border-bottom:1px solid var(--line); }
+.landing .hero-mb::before { background:none; }
+.landing .hero-badge { background:#181818; border-color:#ffffff26; color:#bbc2cc; }
+.landing .hero-paths { background:linear-gradient(145deg,#191919,#111); border-color:#ffffff24; box-shadow:0 28px 70px -50px #000; }
+.landing .hero-cta .mb-btn { background:#222; color:#e8edf1; border:1px solid #ffffff26; box-shadow:none; }
+.landing .hero-cta .mb-btn:hover { background:#2a2a2a; border-color:#ffffff50; box-shadow:none; }
+.landing .path-icon { background:#ffffff08; border-color:#ffffff20; }
+.landing .hero-cta .coming-soon { color:#999; background:#161616; }
+.landing .hero-sub.intro-reveal { color:#d7e2ea; }
+.landing .academy-preview { background:linear-gradient(145deg,#1b1b1b,#121212); border-color:#ffffff26; }
+.landing .academy-preview>img { background:#111; border-color:#ffffff20; }
+.landing .academy-preview:hover { border-color:#ffffff60; }
+.landing .academy-preview-details h3,.landing .showcase-heading h2 { color:#e8edf1; }
+.landing .preview-number,.landing .showcase-hint { color:#9da4af; }
+.landing .academy-preview-rail { scrollbar-color:#555 transparent; }
+.landing .stat-mb { background:linear-gradient(155deg,#202020,#121212); box-shadow:none; }
+.landing .project { background:linear-gradient(150deg,#1b1b1b,#121212); border-color:#ffffff24; box-shadow:0 30px 70px -50px #000; }
+.landing .project-shot { background:#161616; }
+.landing .project-filters { background:#161616; }
+.landing .project-filters input,.landing .project-filters select { background:#0c0c0c; color:#e8edf1; border-color:#ffffff30; }
+.landing .f-card,.landing .contact-card,.landing .query-form { background:linear-gradient(145deg,#1b1b1b,#121212); border-color:#ffffff24; box-shadow:none; }
+.landing .query-form input,.landing .query-form select,.landing .query-form textarea { background:#0c0c0c; color:#e8edf1; border-color:#ffffff30; }
+.landing .mb-auth-dialog { background:linear-gradient(155deg,#202020,#101010); }
+.landing .mb-auth-dialog input { background:#0c0c0c; }
+/* Preserve each product's existing accent while grounding its surface in black. */
+.landing .market-grid > .market-card .market-card-face { background:linear-gradient(145deg,#242424,#141414); color:#e8edf1; border-color:#ffffff30; box-shadow:0 22px 50px -25px #000; }
+.landing .market-grid > .market-card .market-card-back { background:linear-gradient(145deg,#202020,#101010); }
+.landing .market-grid > .market-card h3 { color:#f1f3f5; }
+.landing .market-grid > .market-card p { color:#b0b6bf; }
+.landing .market-grid > .market-card .market-card-face::before,.landing .market-grid > .market-card .market-card-face::after { opacity:.1; }
+.landing .market-grid > .market-card .market-tag,.landing .market-grid > .market-card .market-tag.alt,.landing .market-grid > .market-card .market-badge { background:#ffffff0d; color:#cbd5e1; border-color:#ffffff26; }
+.landing .market-grid > .market-card .mb-btn { background:#e8edf1; color:#111; border:1px solid #ffffff40; box-shadow:none; }
+.landing .market-grid > .market-card .mb-btn:hover { background:#fff; box-shadow:none; }
+.landing .mb-footer { border-color:#ffffff24; }
