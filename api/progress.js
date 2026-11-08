@@ -1,5 +1,6 @@
 const { send, sameOrigin, rateLimit, requireUser } = require("../lib/auth");
 const store = require("../lib/store");
+const { isProgressItem } = require("../lib/progress-catalog");
 const ACADEMIES = new Set(["snowflake", "aws", "etl-elt", "python", "database", "java", "genz-prep"]);
 const { cleanActivity } = require("../lib/activity");
 const STATES = new Set(["known", "completed", "missed", "cleared", "activity"]);
@@ -33,7 +34,7 @@ module.exports = async function handler(req, res) {
         try { data=cleanActivity(entry.data); } catch { return send(res,400,{ok:false,error:"Invalid progress statistics."}); }
         records.push({academy,itemId,state,data});
       } else {
-        if(itemId==='__activity')return send(res,400,{ok:false,error:"Invalid progress item."});
+        if(!isProgressItem(academy,itemId)||itemId==='__activity')return send(res,400,{ok:false,error:"Invalid progress item."});
         records.push({ academy, itemId, state });
       }
     }

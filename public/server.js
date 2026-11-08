@@ -29,6 +29,7 @@ const blockedStaticSegments = new Set([".git", ".vercel", "android", "api", "nod
 const blockedStaticFiles = new Set([".gitignore", "capacitor.config.json", "email_setup.md", "package-lock.json", "package.json", "readme.md", "server.js", "vercel.json"]);
 
 function applySecurityHeaders(res) {
+  res.setHeader("Content-Security-Policy", "default-src 'self'; script-src 'self' 'wasm-unsafe-eval' https://cdn.jsdelivr.net/pyodide/v0.26.4/full/ https://cdn.jsdelivr.net/npm/sql.js@1.10.3/dist/; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' blob: https://cdn.pixabay.com; connect-src 'self' https://cdn.jsdelivr.net/pyodide/v0.26.4/full/ https://cdn.jsdelivr.net/npm/sql.js@1.10.3/dist/; worker-src 'self' blob:; frame-src 'none'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'");
   res.setHeader("X-Content-Type-Options", "nosniff");
   res.setHeader("X-Frame-Options", "DENY");
   res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");

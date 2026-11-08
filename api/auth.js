@@ -44,7 +44,7 @@ module.exports = async function handler(req, res) {
     if (!await rateLimit(req, `auth-${action}`, action === "login" ? 20 : 8)) return send(res, 429, { ok: false, error: "Too many attempts. Please wait and try again." });
     const email = String(body.email || "").trim().toLowerCase();
     const password = String(body.password || "");
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email) || password.length < 8 || password.length > 128) {
+    if (email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email) || password.length < 8 || password.length > 128) {
       return send(res, 400, { ok: false, error: "Enter a valid email and a password between 8 and 128 characters." });
     }
     let user;

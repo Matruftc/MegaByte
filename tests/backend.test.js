@@ -36,6 +36,10 @@ test('Netlify account and progress flows against MongoDB', async t => {
     alice = await register('ALICE@example.test');
     if (previous === undefined) delete process.env.NETLIFY; else process.env.NETLIFY = previous;
     assert.equal(alice.status,201);
+    assert.match(alice.headers.get('content-security-policy'), /frame-ancestors 'none'/);
+    assert.match(alice.headers.get('content-security-policy'), /base-uri 'self'/);
+    assert.match(alice.headers.get('content-security-policy'), /script-src-attr 'none'/);
+    assert.ok(!alice.headers.get('content-security-policy').includes("script-src 'self' 'unsafe-inline'"));
     assert.equal(alice.body.user.email,'alice@example.test');
     assert.equal(alice.body.user.passwordHash,undefined);
     assert.match(alice.headers.get('set-cookie'),/HttpOnly; SameSite=Lax/);
@@ -48,6 +52,7 @@ test('Netlify account and progress flows against MongoDB', async t => {
   });
   await t.test('duplicate emails, bad passwords, SQL injection and invalid input are rejected', async () => {
     assert.equal((await register('alice@example.test')).status,409);
+    assert.equal((await register('a'.repeat(255)+'@example.test')).status,400);
     assert.equal((await request(auth,{method:'POST',body:{action:'login',email:'alice@example.test',password:'wrong-password'}})).status,401);
     assert.equal((await request(auth,{method:'POST',body:{action:'login',email:"x'OR'1'='1@example.test",password:'test-secure-password'}})).status,401);
     assert.equal((await request(auth,{method:'POST',body:{action:'register',email:'bad',password:'short'}})).status,400);
@@ -61,7 +66,7 @@ test('Netlify account and progress flows against MongoDB', async t => {
     assert.equal((await request(auth,{method:'POST',cookie:alice.cookie,body:{action:'profile',avatar:'invalid'}})).status,400);
   });
   await t.test('progress batches validate before writing, upsert idempotently and remain private', async () => {
-    const payload={progress:[{academy:'python',itemId:'lesson-1',state:'known'},{academy:'python',itemId:'lesson-1',state:'completed'},{academy:'aws',itemId:'module-2',state:'missed'}]};
+    const payload={progress:[{academy:'python',itemId:'1',state:'known'},{academy:'python',itemId:'1',state:'completed'},{academy:'aws',itemId:'cloud-value',state:'missed'}]};
     assert.equal((await request(progress,{method:'POST',cookie:alice.cookie,body:payload})).status,200);
     assert.equal((await request(progress,{method:'POST',cookie:alice.cookie,body:payload})).status,200);
     let r=await request(progress,{cookie:alice.cookie});assert.equal(r.body.progress.length,2);
@@ -74,7 +79,7 @@ test('Netlify account and progress flows against MongoDB', async t => {
     assert.equal((await request(progress)).status,401);
   });
   await t.test('cleared items stay cleared and a stale account cannot write into another account', async () => {
-    const entry={academy:'python',itemId:'lesson-1',state:'cleared'};
+    const entry={academy:'python',itemId:'1',state:'cleared'};
     const wrong=await request(progress,{method:'POST',cookie:bob.cookie,body:{accountId:alice.body.user.id,progress:[entry]}});
     assert.equal(wrong.status,409);
     assert.deepEqual((await request(progress,{cookie:bob.cookie})).body.progress,[]);
@@ -82,7 +87,7 @@ test('Netlify account and progress flows against MongoDB', async t => {
     assert.equal(saved.status,200);assert.equal(saved.body.accountId,alice.body.user.id);
     const loaded=await request(progress,{cookie:alice.cookie});
     assert.equal(loaded.body.accountId,alice.body.user.id);
-    assert.equal(loaded.body.progress.find(r=>r.itemId==='lesson-1').state,'cleared');
+    assert.equal(loaded.body.progress.find(r=>r.itemId==='1').state,'cleared');
   });
   await t.test('full statistics are validated, account-scoped, and durable', async () => {
     const data={runs:6,days:['2026-11-07'],attempts:{'1':{cid:1,tries:2,correct:true,at:Date.now()}},history:[{at:Date.now(),right:4,total:5,best:3,topics:[1]}],prefs:{days:['2026-11-07'],runs:6,perfect:true,submitted:false},missed:{'7':3}};
@@ -96,6 +101,29 @@ test('Netlify account and progress flows against MongoDB', async t => {
     assert.equal({}.polluted,undefined);
     assert.equal((await request(progress,{method:'POST',cookie:alice.cookie,body:{progress:[{...entry,itemId:'anything-else'}]}})).status,400);
     assert.equal((await request(progress,{method:'POST',cookie:alice.cookie,body:{progress:[{academy:'python',itemId:'__activity',state:'known'}]}})).status,400);
+  });
+  await t.test('catalog validation bounds storage and hides legacy invalid records', async () => {
+    const catalog = require('../lib/progress-catalog.json');
+    const {generateCatalog} = require('../scripts/generate-progress-catalog');
+    const {maximumRecords} = require('../lib/progress-catalog');
+    assert.deepEqual(JSON.parse(JSON.stringify(generateCatalog())),catalog);
+    const before = await db.collection('progress').countDocuments({userId:alice.body.user.id});
+    for (const itemId of ['attacker-created-id','__proto__','constructor']) {
+      const r=await request(progress,{method:'POST',cookie:alice.cookie,body:{progress:[{academy:'python',itemId:'2',state:'known'},{academy:'python',itemId,state:'known'}]}});
+      assert.equal(r.status,400);
+    }
+    assert.equal(await db.collection('progress').countDocuments({userId:alice.body.user.id}),before);
+    await db.collection('progress').insertOne({userId:alice.body.user.id,academy:'python',itemId:'legacy-bogus',state:'known'});
+    assert.equal((await request(progress,{cookie:alice.cookie})).body.progress.some(r=>r.itemId==='legacy-bogus'),false);
+    await db.collection('progress').deleteOne({userId:alice.body.user.id,itemId:'legacy-bogus'});
+    const owner=randomUUID();
+    const all=Object.entries(catalog).flatMap(([academy,ids])=>[...ids.map(itemId=>({academy,itemId,state:'known'})),{academy,itemId:'__activity',state:'activity',data:{}}]);
+    const store=require('../lib/store');
+    await store.saveProgress(owner,all);
+    await Promise.all(Array.from({length:4},()=>store.saveProgress(owner,all)));
+    assert.equal(await db.collection('progress').countDocuments({userId:owner}),maximumRecords);
+    await assert.rejects(()=>store.saveProgress(owner,[{academy:'python',itemId:'made-up',state:'known'}]));
+    await db.collection('progress').deleteMany({userId:owner});
   });
   await t.test('the adapter rejects oversized, malformed and cross-origin requests', async () => {
     assert.equal((await request(auth,{method:'POST',raw:'{bad'})).status,400);

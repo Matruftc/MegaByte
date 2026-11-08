@@ -6,7 +6,7 @@
   "scripts": {
     "test": "node --test tests/*.test.js",
     "start": "node server.js",
-    "build:netlify": "node scripts/build-netlify.js",
+    "build:netlify": "node scripts/generate-progress-catalog.js && node scripts/build-netlify.js",
     "dev:netlify": "netlify dev",
     "netlify:login": "netlify login",
     "netlify:link": "netlify link",
@@ -28,5 +28,9 @@
   "devDependencies": {
     "netlify-cli": "^27.16.2",
     "mongodb-memory-server": "^10.0.0"
+  },
+  "overrides": {
+    "glob@>=9.0.0 <14.0.2": "14.0.4",
+    "minimatch@>=7.0.0 <11.0.1": "11.0.5"
   }
 }
