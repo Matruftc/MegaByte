@@ -34,14 +34,21 @@ both as exposed; never paste their replacements into chat or commit them.
 Read-only connection-status inspection confirmed the old application's MongoDB
 credential has atlasAdmin on admin. This is excessive for this application.
 
-The owner is creating a replacement Atlas database user with readWrite only on
-megabyte and updating Netlify MONGODB_URI. Keep the old user until the new URI is
-verified in a fresh deployment, then delete the old user. Replace the ignored
-local .env separately. Check production, deploy-preview and branch-deploy
-contexts for stale credentials. Revoke the shared Groq key in Groq's console;
-MegaByte's backend has no Groq dependency or management credentials.
+The replacement Atlas user is now verified with readWrite only on megabyte.
+Netlify production and contexts using the old connection were switched to the
+replacement, and the ignored owner-only local .env was updated. A fresh Netlify
+production deployment (6af04bcd0766ab0da5a9c03d) passed live registration, login,
+profile update, progress save/restore, account isolation and logout checks.
+Temporary QA accounts and their records were removed. No credentials were
+committed or printed. A private ignored retiring-credential file is retained
+only to verify old-user revocation, then should be removed.
 
-Atlas management API/CLI credentials were not available, so credential rotation,
+The old administrative database user and mistaken placeholder user still need
+to be revoked through Atlas. If another application uses either user, migrate it
+to a separate restricted credential before revocation. Revoke the shared Groq
+key in Groq's console; MegaByte has no Groq management credentials.
+
+Atlas management API/CLI credentials were not available, so database-user creation/revocation,
 network access-list changes, backups and Atlas account MFA cannot be performed
 through the application's database connection. Netlify/GitHub/Atlas account MFA,
 logs/alerts, restoration capability and platform billing protections still need
